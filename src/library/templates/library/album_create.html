@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Ajouter un album</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="formContainer">
+        <h1>Ajouter un album</h1>
+        <form method="POST" enctype="multipart/form-data" class="form form-create">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="{{ submit_button_value }}" class="btn btn-submit">
+        </form>
+    </div>
+
+
+
+{% endblock %}

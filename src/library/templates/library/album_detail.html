@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{%load static%}
+{% load library_extras %}
+
+{% block title%} <title>{{ album.title }}</title> {% endblock %}
+
+{% block content %}
+
+    <div class="bio">
+        <img src="{{ album.thumbnail.url}}" alt="{{album.slug}}" width="300" height="300">
+        <h1>{{ album.title }}</h1>
+        <p>Sorti le {{ album.date_released }}</p>
+        <p>Écouté en {{ album.date_listened|date:'F Y' }}</p>
+        <p>Voix - {{ album.get_type_vocal_display }}</p>
+        <p>Genre Primaire - {% for genre in album.genre_primary.all %}{{ genre }}, {% endfor %}</p>
+        <p>Genre Secondaire -
+            {% if album.genre_secondary.all %}
+                {% for genre in album.genre_secondary.all %}
+                {{ genre }}
+                {% endfor %}
+            {% else %}
+                Aucun
+            {% endif %}
+        </p>
+        <form action="{% url 'library:edit-album' slug=album.slug %}">
+            <button class="btn btn-edit">Modifier {{ album.title }}</button>
+        </form>
+        <form action="{% url 'library:delete-album' slug=album.slug %}">
+            <button class="btn btn-delete">Supprimer {{ album.title }}</button>
+        </form>
+    </div>
+
+    <div class="tracksTable">
+        <h1>Liste des morceaux</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Titre</th>
+                    <th>Durée</th>
+                    <th>Playlist</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                    {% for track in tracks %}
+                    <tr>
+                        <td class="track-number">{{ track.number }}</td>
+                        <td class="track-title">{{track.title}}</td>
+                        <td class="track-duration">{{track.duration}}</td>
+                        <td class="track-playlist">
+                            {% for playlist in track.playlist.all %}
+                                {% if playlist.type == "G" %}
+                                <span class="fa fa-music" title="{{ playlist.name }}"></span>
+                                {% elif playlist.type == "Y"%}
+                                <span class="fa fa-calendar-check-o" title="{{ playlist.name }}"></span>
+                                {% elif playlist.type == "T"%}
+                                <span class="fa fa-arrow-circle-up" title="{{ playlist.name }}"></span>
+                                {% else %}
+                                <span class="fa fa-heart" title="{{ playlist.name }}"></span>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td class="track-rating">
+                            {% for i in track.rating|time %}
+                                <span class="fa fa-star checked"></span>
+                            {% endfor %}
+                            {% if track.rating|last == "5" %}
+                                <span class="fa fa-star-half-full"></span>
+                            {% endif %}
+                            {% for j in  track.rating|minus|time %}
+                                <span class="fa fa-star-o"></span>
+                            {% endfor %}
+                            {{track.rating}}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="lastTR">
+                        <td></td>
+                        <td></td>
+                        <td>{{full_duration}}</td>
+                        <td></td>
+                    </tr>
+            </tbody>
+        </table>
+        <p><a href="{% url 'library:create-tracks' pk=album.id %}">Ajouter des morceaux pour {{ album.title }}</a></p>
+    </div>
+
+{% endblock %}

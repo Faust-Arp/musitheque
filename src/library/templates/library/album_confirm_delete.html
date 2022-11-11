@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Supprimer un album</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="formContainer">
+        <h1>Supprimer l'album {{album.tile}}</h1>
+        <form method="POST" enctype="multipart/form-data" class="form form-delete">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Oui, Supprimer" class="btn btn-delete">
+        </form>
+    </div>
+
+
+
+{% endblock %}

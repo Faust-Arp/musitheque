@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Ajouter des morceaux</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="formTracks">
+        <h1>Ajouter des morceaux</h1>
+        <input type="number" id="nbRow" name="Nombre de morceau" min="1" value="1">
+        <button id="addTrackRow" class="addTrackRow" onclick="addRow()">+</button>
+
+        <form method="POST" enctype="multipart/form-data" class="formTrack form-create">
+            {% for hidden_field in form.hidden_fields %}
+                {{ hidden_field.errors }}
+                {{ hidden_field }}
+            {% endfor %}
+
+            <h3>Morceaux</h3>
+
+            {{ form.management_form }}
+            {{ form.non_form_errors }}
+
+            {% for track_form in form.forms %}
+
+                <div id="formTrackRow">
+                    {% csrf_token %}
+                    {{ track_form }}
+                </div>
+
+            {% endfor %}
+            <input id="submit-button" type="submit" value="Ajouter" class="btn btn-submit">
+        </form>
+    </div>
+<div id="empty-form" class="hidden">{{ form.empty_form }}</div>
+{% endblock %}

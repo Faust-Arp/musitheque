@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Accueil de la musithèque</title>
+{% endblock %}
+
+{% block nav %}<input type="text" id="recherche" placeholder="Rechercher" onkeyup="search()">{% endblock %}
+
+
+{% block content %}
+
+    <div class="bandList">
+        <ul id="listeGroupe">
+            {% for band in bands %}
+                <li id="{{ band.slug }}" style="background-image:url('{{ band.thumbnail.url }}')"><a href="{% url 'library:band' slug=band.slug %}">{{ band.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <p>Vous êtes connecté en tant que {{ user }}</p>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Supprimer un groupe</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="formContainer">
+        <form method="POST" class="form form-delete">
+        {% csrf_token %}
+        <p>Êtes-vous sûr de vouloir supprimer "{{ band.name }}"</p>
+        <input type="submit" value="Oui, supprimer" class="btn btn-delete">
+    </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@300&display=swap');
+@import "reset.css";
+
+body {
+
+}
+
+nav{
+    margin: 2rem;
+    display: flex;
+}
+
+nav a {
+    margin-left: 12px;
+
+}
+
+#recherche {
+    margin-left: auto;
+
+}
+
+#listeGroupe li {
+    position: relative;
+    display: inline-block;
+    border-radius: 100%;
+    width : 250px;
+    height: 250px;
+    text-align: center;
+    margin : 25px 5px 5px 5px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#listeGroupe a {
+    position: relative;
+
+    top: 260px;
+    vertical-align: top;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+    color:#333;
+    font-family: 'Abril Fatface';
+    letter-spacing: 1px;
+}
+
+.btn{
+    padding: .5rem;
+    border: none;
+    font-weight: 600;
+    font-size: 1.25rem;
+    border-radius: .3rem;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-submit {
+    background-color: steelblue;
+
+}
+
+.btn-edit {
+    background-color: gold;
+
+}
+
+.btn-delete{
+    background-color: indianred;
+
+}
+
+.delete-row{
+    width: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 20%;
+    color: white;
+    cursor: pointer;
+}
+
+.bio {
+    margin-left: 20px;
+    padding-bottom: 5px;
+    border-bottom: 2px #333;
+    height: 300px;
+}
+
+.bio img {
+    position: absolute;
+    border-radius: 10px;
+}
+
+.bio p {
+    margin: 0 0 10px 310px;
+    font-family: 'Mukta';
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.bio h1 {
+    margin: 0 0 10px 310px;
+    font-size: 50px;
+    letter-spacing: 1px;
+    font-family: 'Mukta';
+}
+
+.bio form {
+    margin: 0 0 10px 310px;
+    font-family: 'Mukta';
+}
+
+.listContainer {
+    margin-left: 330px;
+    font-family: 'Mukta';
+    font-size: 20px;
+}
+
+.listContainer img {
+    vertical-align:middle;
+    border-radius: 10px;
+}
+
+.listContainer h1 {
+    font-size: 50px;
+    letter-spacing: 1px;
+    font-family: 'Mukta';
+}
+
+.listContainer ul {
+    list-style-type: none;
+
+}
+
+.listContainer li {
+    padding-bottom: 5px;
+
+}
+
+.listContainer p {
+    display: inline-block;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+.formContainer {
+    width: 33%;
+    margin: 0 auto;
+    font-family: 'Mukta';
+    font-size: 20px;
+}
+
+.formContainer h1{
+    text-align: center;
+
+}
+
+.form input{
+    display: block;
+    margin-bottom: 10px;
+    padding: .5rem;
+    line-height: 1.5;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    width: 100%;
+}
+
+.form select{
+    display: block;
+    padding: .5rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    width: 100%;
+}
+
+.form label{
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: block;
+    box-sizing: border-box;
+}
+
+.formTracks{
+
+    font-family: 'Mukta';
+    font-size: 20px;
+}
+
+#formTrack p{
+    display: inline-block;
+    font-family: 'Mukta';
+    font-size: 20px;
+}
+
+.hidden {
+    display : none;
+}
+
+.tracksTable {
+    margin-left: 330px;
+    font-family: 'Mukta';
+    font-size: 20px;
+}
+
+.tracksTable table{
+    margin-top: 5px;
+    width:75%;
+}
+
+.tracksTable tr:not(:last-child) {
+    height: 25px;
+    border-bottom: 1px solid #808080;
+}
+
+.tracksTable td{
+    text-align: center;
+    vertical-align: bottom;
+    border-bottom: solid, 5px;
+}
+
+.track-rating {
+    text-align: left;
+}
+
+.checked {
+    color: orange;
+}
+
+.fa-star-half-full {
+    color: orange;
+}
+
+.fa-calendar-check-o, .fa-heart{
+    color: indianred;
+}
+
+.fa-arrow-circle-up{
+    color: gold;
+}
+
+.lastTR {
+    font-weight: bold;
+}
+
+
+#id_genre_primary {
+    height: 250px;
+}
+
+#id_genre_secondary {
+    height: 250px;
+}
+
+.chart {
+    width: 33%;
+    text-align: center;
+    margin: 0 auto;
+    font-family: 'Mukta';
+    font-size: 20px;
+}
+
+.chartSelector {
+    width: 33%;
+    margin: 0 auto;
+    font-family: 'Mukta';
+    font-size: 20px;
+    text-align: center;
+}
+

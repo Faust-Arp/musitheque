@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Statistiques</title>
+{% endblock %}
+
+{% block content %}
+    <div class="chartSelector">
+        <label for="albumChartSelector">Voir le graphique: </label>
+        <select name="albumChartSelector" id="albumChartSelector" onchange="displayChart()">
+            <option value="albumByYear">Albums par Années</option>
+            <option value="albumByDecade">Albums par décénies</option>
+            <option value="albumByPrimaryGenre">Albums par genre</option>
+        </select>
+    </div>
+<br>
+<br>
+    <div id="albumByYear" class="chart">
+        <canvas id="canvasByYear" width="400px" height="400px"></canvas>
+        <script>
+        const ctx = document.getElementById('canvasByYear').getContext('2d');
+        const chartYear = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels:  {{ years|safe }},
+                datasets: [{
+                    label: 'Albums par années',
+                    data: {{albums_year}},
+                    backgroundColor: [
+                        '#E67E9E',
+                        '#BD8EE6',
+                        '#83A0E6',
+                    ],
+                    borderColor: [
+                        '#E67E9E',
+                        '#BD8EE6',
+                        '#83A0E6',
+                    ],
+                    borderWidth: 1,
+                    barPercentage: .3,
+                    categoryPercentage: .8
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        </script>
+    </div>
+
+    <div id="albumByDecade" class="chart" style="display: none;">
+        <canvas id="canvasByDecade" width="400px" height="400px"></canvas>
+        <script>
+        const ctx2 = document.getElementById('canvasByDecade').getContext('2d');
+        const chartDecade = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels:  {{ decades|safe }},
+                datasets: [{
+                    label: 'Albums par décénies',
+                    data: {{albums_decade}},
+                    backgroundColor: [
+                        '#E67E9E',
+                        '#BD8EE6',
+                        '#83A0E6',
+                    ],
+                    borderColor: [
+                        '#E67E9E',
+                        '#BD8EE6',
+                        '#83A0E6',
+                    ],
+                    borderWidth: 1,
+                    barPercentage: .3,
+                    categoryPercentage: .8
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        </script>
+    </div>
+
+    <div id="albumByPrimaryGenre" class="chart" style="display: none;">
+        <canvas id="canvasByPrimaryGenre" width="400px" height="400px"></canvas>
+        <script>
+        const ctx3 = document.getElementById('canvasByPrimaryGenre').getContext('2d');
+        const chartGenre = new Chart(ctx3, {
+            type: 'pie',
+            data: {
+                labels:  {{ genres|safe }},
+                datasets: [{
+                    label: 'Albums par genre',
+                    data: {{albums_genres}},
+                    backgroundColor: [
+                        '#E67E9E',
+                        '#BD8EE6',
+                        '#83A0E6',
+                    ],
+                    borderColor: [
+                        '#E67E9E',
+                        '#BD8EE6',
+                        '#83A0E6',
+                    ],
+                    borderWidth: 1,
+                    barPercentage: .3,
+                    categoryPercentage: .8
+                }]
+            },
+        });
+        </script>
+    </div>
+
+{% endblock %}

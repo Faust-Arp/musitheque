@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="{% static 'javascript/script.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+
+    <nav>
+        <a href="{% url 'library:home' %}">| Accueil |</a>
+        <a href="{% url 'library:create-band' %}">Ajouter un groupe |</a>
+        <a href="{% url 'library:create-album' %}">Ajouter un album |</a>
+        <a href="{% url 'statistic:stats-band' %}">Statistiques des groupes |</a>
+        <a href="{% url 'statistic:stats-album' %}">Statistiques des albums |</a>
+        {% block nav %}{% endblock %}
+    </nav>
+
+
+    <section id="library">
+        {% block content %}
+
+        {% endblock %}
+    </section>
+</body>
+</html>

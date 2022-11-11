@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Statistiques</title>
+{% endblock %}
+
+{% block content %}
+    <div class="chart">
+        <canvas id="bandByCountry" width="400px" height="400px"></canvas>
+        <script>
+        const ctx = document.getElementById('bandByCountry').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels:  {{ countries|safe }},
+                datasets: [{
+                    label: 'Groupes par pays',
+                    data: {{bands_number}},
+                    backgroundColor: [
+                        '#E67E9E',
+                        '#BD8EE6',
+                        '#83A0E6',
+                    ],
+                    borderColor: [
+                        '#E67E9E',
+                        '#BD8EE6',
+                        '#83A0E6',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                 indexAxis: 'y',
+            }
+        });
+        </script>
+    </div>
+{% endblock %}
