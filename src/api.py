@@ -72,12 +72,15 @@ def get_album_by_released_decade():
     for album in albums:
 
         album_year = album.date_released.strftime("%Y")
-        album_decade = album_year.replace(album_year[3], "0")
+        print(album_year)
+        album_decade = album_year[:-1] + "0"
 
         if album_decade in album_by_decade:
             album_by_decade[album_decade] += 1
+            print(album_decade)
         else:
             album_by_decade[album_decade] = 1
+            print(album_decade)
 
     decades, albums_number = zip(*album_by_decade.items())
 
