@@ -13,6 +13,15 @@ def get_album_duration(id):
     return full_duration
 
 
+def get_album_owned_count_for_band(id):
+    albums = Album.objects.filter(groupe=id).count
+    print(albums)
+    album_owned = Album.objects.filter(groupe=id, owned=True).count
+    print(album_owned)
+
+    return album_owned, albums
+
+
 def get_band_count_by_country():
 
     # On récupère la liste de tous les groupes et on les tri par pays pour l'ordre du graphique
@@ -72,15 +81,12 @@ def get_album_by_released_decade():
     for album in albums:
 
         album_year = album.date_released.strftime("%Y")
-        print(album_year)
         album_decade = album_year[:-1] + "0"
 
         if album_decade in album_by_decade:
             album_by_decade[album_decade] += 1
-            print(album_decade)
         else:
             album_by_decade[album_decade] = 1
-            print(album_decade)
 
     decades, albums_number = zip(*album_by_decade.items())
 

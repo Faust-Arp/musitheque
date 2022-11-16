@@ -1,12 +1,13 @@
 from django.urls import path
-from library.views import LibraryHome, BandCreate, BandEdit, BandDetail, BandDelete
-from library.views import AlbumDelete, AlbumCreate, AlbumDetail, AlbumEdit
+from library.views import BandList, BandCreate, BandEdit, BandDetail, BandDelete
+from library.views import AlbumList, AlbumDelete, AlbumCreate, AlbumDetail, AlbumEdit
 from library.views import TrackCreate
 
 app_name = "library"
 
 urlpatterns = [
-    path('', LibraryHome.as_view(), name='home'),
+    path('bands', BandList.as_view(), name='bands-list'),
+    path('albums', AlbumList.as_view(), name='albums-list'),
     path('create-band', BandCreate.as_view(), name='create-band'),
     path('band/<str:slug>', BandDetail.as_view(), name='band'),
     path('edit-band/<str:slug>', BandEdit.as_view(), name='edit-band'),

@@ -112,6 +112,9 @@ class Playlist(models.Model):
     slug = models.SlugField(max_length=50)
     type = models.CharField(max_length=2, choices=PLAYLIST_TYPE_CHOICES)
     optional = models.BooleanField(default=False, verbose_name="Optionel")
+    date_added = models.DateField(auto_now=True, blank=True, null=True)
+    like = models.IntegerField(default=0, blank=True, null=True)
+    fan = models.IntegerField(default=0, blank=True, null=True)
 
     class Meta:
         verbose_name = "Playlist"

@@ -7,12 +7,13 @@ from django.contrib.admin.widgets import AdminDateWidget
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
+import api
 from library.forms import TracksCreateForm, TracksCreateFormSet
 from library.models import Band, Album, Track
 from api import get_album_duration
 
 
-class LibraryHome(ListView):
+class BandList(ListView):
     model = Band
     context_object_name = "bands"
 
@@ -44,7 +45,6 @@ class BandCreate(UserPassesTestMixin, CreateView):
         return self.request.user.is_admin
 
 
-
 class BandEdit(UserPassesTestMixin, UpdateView):
     model = Band
     template_name = "library/band_create.html"
@@ -72,7 +72,10 @@ class BandDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         band = Band.objects.get(slug=self.kwargs.get('slug'))
+        album_owned, album_count = api.get_album_owned_count_for_band(band.id)
         context['albums'] = Album.objects.filter(groupe=band.id).order_by("date_released")
+        context['album_owned'] = album_owned
+        context['album_count'] = album_count
         return context
 
 
@@ -83,6 +86,18 @@ class BandDelete(UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.request.user.is_admin
+
+
+class AlbumList(ListView):
+    model = Album
+    context_object_name = "albums"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context['user'] = user
+        return context
+
 
 
 class AlbumCreate(UserPassesTestMixin, CreateView):

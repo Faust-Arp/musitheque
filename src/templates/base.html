@@ -13,12 +13,13 @@
 <body>
 
     <nav>
-        <a href="{% url 'library:home' %}">| Accueil |</a>
-        <a href="{% url 'library:create-band' %}">Ajouter un groupe |</a>
-        <a href="{% url 'library:create-album' %}">Ajouter un album |</a>
-        <a href="{% url 'statistic:stats-band' %}">Statistiques des groupes |</a>
-        <a href="{% url 'statistic:stats-album' %}">Statistiques des albums |</a>
-        {% block nav %}{% endblock %}
+        <div class="navbar">
+            <a href="{% url 'library:bands-list' %}">Artistes</a>
+            <a href="{% url 'library:albums-list' %}">Albums</a>
+            <a href="{% url 'statistic:stats-band' %}">Statistiques des groupes</a>
+            <a href="{% url 'statistic:stats-album' %}">Statistiques des albums</a>
+            {% block nav %}{% endblock %}
+        </div>
     </nav>
 
 

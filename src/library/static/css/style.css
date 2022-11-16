@@ -6,38 +6,93 @@ body {
 
 }
 
+#library {
+    width: 85%;
+    background-color: White;
+    margin: 55px auto;
+
+}
+
 nav{
-    margin: 2rem;
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    background-color: White;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 1px 1px 4px rgb(0 0 0 / 20%);
+}
+
+.navbar {
     display: flex;
+    justify-content: space-evenly;
+    width: 85%;
+    margin: 0 auto;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 nav a {
-    margin-left: 12px;
-
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 50px;
 }
 
 #recherche {
-    margin-left: auto;
+    transition-duration: 800ms;
+    position: absolute;
+    right: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 5px;
+}
+
+#recherche:focus {
+
+    flex-grow: 1;
+    border-radius: 10px;
+    position: relative;
+}
+
+.bandList ul{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
 
 }
 
-#listeGroupe li {
-    position: relative;
-    display: inline-block;
+.bandList li {
+    list-style: none;
+
+}
+
+.img-band {
+    width: 250px;
+    height: 250px;
+    margin: 10px 27px;
+}
+
+.name {
+    width: 310px;
+
+}
+
+.img-band img{
     border-radius: 100%;
     width : 250px;
-    height: 250px;
-    text-align: center;
-    margin : 25px 5px 5px 5px;
     background-repeat: no-repeat;
     background-size: cover;
+    justify-content: space-between;
 }
 
 #listeGroupe a {
-    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    text-align: center;
 
-    top: 260px;
-    vertical-align: top;
 }
 
 a:link, a:visited {
@@ -48,13 +103,15 @@ a:link, a:visited {
 }
 
 .btn{
-    padding: .5rem;
+    padding: .2rem;
+    width: 50%;
     border: none;
     font-weight: 600;
     font-size: 1.25rem;
     border-radius: .3rem;
     color: white;
     cursor: pointer;
+    font-family: 'Mukta';
 }
 
 .btn-submit {
@@ -81,80 +138,44 @@ a:link, a:visited {
     cursor: pointer;
 }
 
-.bio {
-    margin-left: 20px;
-    padding-bottom: 5px;
-    border-bottom: 2px #333;
-    height: 300px;
+#library-content {
+    display: grid;
+    grid_template_rows: 2fr 3fr;
+    grid-template-columns: 1fr 3fr;
+    grid-template-areas: "img bio"
+                         "img list";
+
+    grid-gap: 30px;
 }
 
-.bio img {
-    position: absolute;
-    border-radius: 10px;
+.library-img {
+    grid-area: img;
+}
+
+.library-img img{
+    width: 400px;
+    height: 400px;
+    border-radius: 30px;
+}
+
+.library-img form {
+    margin-top: 1rem;
+}
+
+.bio {
+    grid-area: bio;
+    height: 400px;
+    font-family: 'Mukta';
+    letter-spacing: 1px;
 }
 
 .bio p {
-    margin: 0 0 10px 310px;
-    font-family: 'Mukta';
     font-size: 20px;
-    letter-spacing: 1px;
+    margin-top: 1.5rem;
 }
 
 .bio h1 {
-    margin: 0 0 10px 310px;
     font-size: 50px;
-    letter-spacing: 1px;
-    font-family: 'Mukta';
-}
-
-.bio form {
-    margin: 0 0 10px 310px;
-    font-family: 'Mukta';
-}
-
-.listContainer {
-    margin-left: 330px;
-    font-family: 'Mukta';
-    font-size: 20px;
-}
-
-.listContainer img {
-    vertical-align:middle;
-    border-radius: 10px;
-}
-
-.listContainer h1 {
-    font-size: 50px;
-    letter-spacing: 1px;
-    font-family: 'Mukta';
-}
-
-.listContainer ul {
-    list-style-type: none;
-
-}
-
-.listContainer li {
-    padding-bottom: 5px;
-
-}
-
-.listContainer p {
-    display: inline-block;
-    padding-right: 10px;
-    padding-bottom: 10px;
-}
-
-.formContainer {
-    width: 33%;
-    margin: 0 auto;
-    font-family: 'Mukta';
-    font-size: 20px;
-}
-
-.formContainer h1{
-    text-align: center;
-
 }
 
 .form input{
@@ -189,6 +210,10 @@ a:link, a:visited {
     font-size: 20px;
 }
 
+#formTrackRow {
+    margin-top:10px;
+}
+
 #formTrack p{
     display: inline-block;
     font-family: 'Mukta';
@@ -199,30 +224,37 @@ a:link, a:visited {
     display : none;
 }
 
-.tracksTable {
-    margin-left: 330px;
+.tableContainer {
+    grid-area: list;
     font-family: 'Mukta';
     font-size: 20px;
 }
 
-.tracksTable table{
-    margin-top: 5px;
-    width:75%;
+.tableContainer h1 {
+    font-size: 50px;
+    letter-spacing: 1px;
 }
 
-.tracksTable tr:not(:last-child) {
-    height: 25px;
-    border-bottom: 1px solid #808080;
+.tableContainer img {
+    border-radius: 10px;
 }
 
-.tracksTable td{
+.tableContainer table{
+    margin-top: 15px;
+    width:100%;
+
+}
+
+.tableContainer tr:nth-child(even){
+    background-color: GhostWhite;
+}
+
+.tableContainer td, th{
+    vertical-align: middle;
     text-align: center;
-    vertical-align: bottom;
-    border-bottom: solid, 5px;
-}
 
-.track-rating {
-    text-align: left;
+    padding-top:10px;
+    padding-bottom: 10px;
 }
 
 .checked {

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+
 {% block title %}
     <title>Accueil de la musithèque</title>
 {% endblock %}
@@ -11,8 +12,24 @@
 
     <div class="bandList">
         <ul id="listeGroupe">
+            <li id="addBandButton">
+                <div class="img-band">
+                    <img src="https://picsum.photos/250/250" alt="Random Image">
+                </div>
+                <div class="name name-centered">
+                    <a href="{% url 'library:create-band' %}">Ajouter un artiste</a>
+                </div>
+            </li>
+
             {% for band in bands %}
-                <li id="{{ band.slug }}" style="background-image:url('{{ band.thumbnail.url }}')"><a href="{% url 'library:band' slug=band.slug %}">{{ band.name }}</a></li>
+                <li id="{{ band.slug }}">
+                    <div class="img-band">
+                        <img src="{{ band.thumbnail.url}}" alt="{{band.slug}}">
+                    </div>
+                    <div class="name name-centered">
+                        <a href="{% url 'library:band' slug=band.slug %}">{{ band.name }}</a>
+                    </div>
+                </li>
             {% endfor %}
         </ul>
     </div>

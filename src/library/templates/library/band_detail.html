@@ -4,33 +4,47 @@
 {% block title%} <title>{{ band.name }}</title> {% endblock %}
 
 {% block content %}
+    <div id="library-content">
+        <div class="library-img">
+            <img src="{{ band.thumbnail.url}}" alt="{{band.slug}}">
+            <form action="{% url 'library:edit-band' slug=band.slug %}">
+                <button class="btn btn-edit">Modifier l'artiste</button>
+            </form>
+            <form action="{% url 'library:delete-band' slug=band.slug %}">
+                <button class="btn btn-delete">Supprimer l'artiste</button>
+            </form>
+        </div>
+        <div class="bio">
+            <h1>{{ band.name }}</h1>
+            <p>Pays - {{ band.country }}</p>
+            <p>Région - {{ band.region }}</p>
+            <p>Ville - {{ band.city }}</p>
+            <p>Ajouté le : {{ band.date_added }}</p>
+            <p>
+                {% if band.active %}
+                    Actif
+                {% else %}
+                    Inactif
+                {% endif %}
+            </p>
+            <p>Nombre d'album(s) possédé(s): {{ album_owned }}/{{ album_count }}</p>
 
-    <div class="bio">
-        <img src="{{ band.thumbnail.url}}" alt="{{band.slug}}" width="300" height="300">
-        <h1>{{ band.name }}</h1>
-        <p>Pays - {{ band.country }}</p>
-        <p>Région - {{ band.region }}</p>
-        <p>Ville - {{ band.city }}</p>
-        <p>Ajouté le - {{ band.date_added }}</p>
-        <form action="{% url 'library:edit-band' slug=band.slug %}">
-            <button class="btn btn-edit">Modifier {{ band.name }}</button>
-        </form>
-        <form action="{% url 'library:delete-band' slug=band.slug %}">
-            <button class="btn btn-delete">Supprimer {{ band.name }}</button>
-        </form>
+        </div>
+        <div class="tableContainer">
+            <h1>Discographie</h1>
+
+            <table>
+                <tbody>
+                    {% for album in albums %}
+                        <tr>
+                            <td><img src="{{ album.thumbnail.url }}" alt="{{album.slug}}" width="75" height="75"></td>
+                            <td><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a></td>
+                            <td>{{album.date_released|date:'Y'}}</td>
+                            <td>{{ album.rating }}/5</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <div class="listContainer">
-        <h1>Discographie</h1>
-        <ul>
-            {% for album in albums %}
-            <li>
-                <img src="{{ album.thumbnail.url }}" alt="{{album.slug}}" width="75" height="75">
-                <p><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a> - Sortie le : {{album.date_released}}  -</p>
-                <p>Note : {{ album.rating }} /5</p>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-
 {% endblock %}
