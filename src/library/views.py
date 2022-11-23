@@ -131,7 +131,8 @@ class AlbumCreate(UserPassesTestMixin, CreateView):
         return context
 
     def get_success_url(self):
-        return reverse('library:albums-list')
+        band_id = self.kwargs.get('pk')
+        return reverse('library:band', kwargs={'pk': band_id})
 
     def test_func(self):
         return self.request.user.is_admin
