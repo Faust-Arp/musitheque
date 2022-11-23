@@ -35,4 +35,38 @@
         });
         </script>
     </div>
+
+    <div class="album-filters">
+            <form method="GET" enctype="multipart/form-data" action="{%url 'statistic:stats-band'%}" class="form form-create">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Chercher" class="btn btn-submit">
+            </form>
+
+            <h1>Liste des albums</h1>
+            <div class="tableContainer">
+                <table>
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Pays</th>
+                                <th>Région</th>
+                                <th>Ville</th>
+                                <th>Actif</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for band in bands %}
+                                <tr>
+                                    <td>{{ band.name }}</td>
+                                    <td>{{ band.country }}</td>
+                                    <td>{{ band.region }}</td>
+                                    <td>{{ band.city }}</td>
+                                    <td>{{ band.active }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+        </div>
 {% endblock %}

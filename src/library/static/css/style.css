@@ -42,10 +42,8 @@ nav a {
 
 #recherche {
     transition-duration: 800ms;
-    position: absolute;
+    height: 25px;
     right: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
     margin-left: 5px;
 }
 
@@ -117,6 +115,7 @@ a:link, a:visited {
 .btn-submit {
     background-color: steelblue;
 
+
 }
 
 .btn-edit {
@@ -169,6 +168,13 @@ a:link, a:visited {
     letter-spacing: 1px;
 }
 
+.bio-info {
+    display: flex;
+    height: 325px;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
 .bio p {
     font-size: 20px;
     margin-top: 1.5rem;
@@ -190,7 +196,6 @@ a:link, a:visited {
 }
 
 .form select{
-    display: block;
     padding: .5rem;
     font-size: 1rem;
     border: 1px solid #ced4da;
@@ -255,6 +260,25 @@ a:link, a:visited {
 
     padding-top:10px;
     padding-bottom: 10px;
+}
+
+.formContainer {
+    margin: 0 auto;
+    width: 50%;
+    font-family: 'Mukta';
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.formContainer h1{
+    font-size: 50px;
+}
+
+.formContainer form{
+    width: 100%;
 }
 
 .checked {

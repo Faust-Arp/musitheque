@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, FormView
 from django.contrib.admin.widgets import AdminDateWidget
@@ -8,7 +8,7 @@ from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 import api
-from library.forms import TracksCreateForm, TracksCreateFormSet
+from library.forms import TracksCreateForm, TracksCreateFormSet, AlbumCreateForm
 from library.models import Band, Album, Track
 from api import get_album_duration
 
@@ -44,6 +44,9 @@ class BandCreate(UserPassesTestMixin, CreateView):
     def test_func(self):
         return self.request.user.is_admin
 
+    def get_success_url(self):
+        return reverse('library:bands-list')
+
 
 class BandEdit(UserPassesTestMixin, UpdateView):
     model = Band
@@ -62,6 +65,10 @@ class BandEdit(UserPassesTestMixin, UpdateView):
         context['submit_button_value'] = "Modifier"
         return context
 
+    def get_success_url(self, **kwargs):
+        band_id = self.kwargs.get('pk')
+        return reverse('library:band', kwargs={'pk': band_id})
+
     def test_func(self):
         return self.request.user.is_admin
 
@@ -71,7 +78,7 @@ class BandDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        band = Band.objects.get(slug=self.kwargs.get('slug'))
+        band = Band.objects.get(pk=self.kwargs.get('pk'))
         album_owned, album_count = api.get_album_owned_count_for_band(band.id)
         context['albums'] = Album.objects.filter(groupe=band.id).order_by("date_released")
         context['album_owned'] = album_owned
@@ -81,7 +88,7 @@ class BandDetail(DetailView):
 
 class BandDelete(UserPassesTestMixin, DeleteView):
     model = Band
-    success_url = reverse_lazy("library:home")
+    success_url = reverse_lazy("library:bands-list")
     context_object_name = "band"
 
     def test_func(self):
@@ -99,36 +106,32 @@ class AlbumList(ListView):
         return context
 
 
-
 class AlbumCreate(UserPassesTestMixin, CreateView):
     model = Album
     template_name = "library/album_create.html"
-    fields = [
-        "title",
-        "groupe",
-        "date_released",
-        "date_listened",
-        "type_vocal",
-        "type_album",
-        "owned",
-        "type_owned",
-        "genre_primary",
-        "genre_secondary",
-        "rating",
-        "thumbnail",
-    ]
+    form_class = AlbumCreateForm
+
+    def get_initial(self):
+        groupe = get_object_or_404(Band, pk=self.kwargs.get('pk'))
+        return {
+            'groupe': groupe,
+        }
 
     # Cette fonction sert à ajouter le widget DatePicker sur les champs date du formulaire
     def get_form(self, form_class=None):
         form = super(AlbumCreate, self).get_form(form_class)
         form.fields['date_released'].widget = AdminDateWidget(attrs={'type': 'date'})
         form.fields['date_listened'].widget = AdminDateWidget(attrs={'type': 'date'})
+        form.fields['groupe'].disabled = True
         return form
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['submit_button_value'] = "Créer"
         return context
+
+    def get_success_url(self):
+        return reverse('library:albums-list')
 
     def test_func(self):
         return self.request.user.is_admin
@@ -157,6 +160,10 @@ class AlbumEdit(UserPassesTestMixin, UpdateView):
         context['submit_button_value'] = "Modifier"
         return context
 
+    def get_success_url(self, **kwargs):
+        album_id = self.kwargs.get('pk')
+        return reverse('library:album', kwargs={'pk': album_id})
+
     def test_func(self):
         return self.request.user.is_admin
 
@@ -176,7 +183,7 @@ class AlbumDetail(DetailView):
 
 class AlbumDelete(UserPassesTestMixin, DeleteView):
     model = Album
-    success_url = reverse_lazy("library:home")
+    success_url = reverse_lazy("library:albums-list")
     context_object_name = "album"
 
     def test_func(self):
@@ -209,8 +216,9 @@ class TrackCreate(UserPassesTestMixin, SingleObjectMixin, FormView):
 
         return HttpResponseRedirect(self.get_success_url())
 
-    def get_success_url(self):
-        return reverse('library:home')
+    def get_success_url(self, **kwargs):
+        album_id = self.kwargs.get('pk')
+        return reverse('library:album', kwargs={'pk': album_id})
 
     def test_func(self):
         return self.request.user.is_admin

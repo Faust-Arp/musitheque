@@ -27,6 +27,7 @@ class PlaylistAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "type",
+        "color",
     )
 
 

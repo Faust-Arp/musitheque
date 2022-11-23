@@ -27,13 +27,14 @@ class Band(models.Model):
 
         super().save(*args, **kwargs)
 
-    def get_absolute_url(self):
-        return reverse('library:home')
+    # def get_absolute_url(self):
+    #     return reverse('library:bands-list')
 
 
 class Genre(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50)
+    family = models.CharField(max_length=50, blank=True)
 
     class Meta:
         verbose_name = "Genre"
@@ -85,6 +86,7 @@ class Album(models.Model):
 
     class Meta:
         verbose_name = "Album"
+        ordering = ["title"]
 
     def __str__(self):
         return self.title
@@ -95,8 +97,10 @@ class Album(models.Model):
 
         super().save(*args, **kwargs)
 
-    def get_absolute_url(self):
-        return reverse('library:home')
+    # def get_absolute_url(self, **kwargs):
+    #     album_id = Album.objects.get(pk=args.get('pk'))
+    #     print(album_id)
+    #     return reverse('library:album', kwargs=)
 
 
 class Playlist(models.Model):
@@ -111,8 +115,9 @@ class Playlist(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name="Nom")
     slug = models.SlugField(max_length=50)
     type = models.CharField(max_length=2, choices=PLAYLIST_TYPE_CHOICES)
+    color = models.CharField(max_length=7, verbose_name="Couleur", blank=True)
     optional = models.BooleanField(default=False, verbose_name="Optionel")
-    date_added = models.DateField(auto_now=True, blank=True, null=True)
+    date_added = models.DateField(auto_now=True, blank=True, null=True, verbose_name="Ajoutée le")
     like = models.IntegerField(default=0, blank=True, null=True)
     fan = models.IntegerField(default=0, blank=True, null=True)
 

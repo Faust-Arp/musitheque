@@ -8,7 +8,7 @@
 
     <div class="formContainer">
         <h1>Modifier l'album {{ album.title }}</h1>
-        <form method="POST" enctype="multipart/form-data" class="form form-create">
+        <form method="POST" enctype="multipart/form-data" class="form form-create" action="{% url 'library:album' pk=album.pk %}">
             {% csrf_token %}
             {{ form }}
             <input type="submit" value="Modifier" class="btn btn-submit">

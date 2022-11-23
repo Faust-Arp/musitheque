@@ -7,28 +7,32 @@
     <div id="library-content">
         <div class="library-img">
             <img src="{{ band.thumbnail.url}}" alt="{{band.slug}}">
-            <form action="{% url 'library:edit-band' slug=band.slug %}">
+            <form action="{% url 'library:edit-band' pk=band.pk %}">
                 <button class="btn btn-edit">Modifier l'artiste</button>
             </form>
-            <form action="{% url 'library:delete-band' slug=band.slug %}">
+            <form action="{% url 'library:delete-band' pk=band.pk %}">
                 <button class="btn btn-delete">Supprimer l'artiste</button>
+            </form>
+            <form action="{% url 'library:create-album' pk=band.pk %}">
+                <button class="btn btn-submit">Ajouter un Album</button>
             </form>
         </div>
         <div class="bio">
             <h1>{{ band.name }}</h1>
-            <p>Pays - {{ band.country }}</p>
-            <p>Région - {{ band.region }}</p>
-            <p>Ville - {{ band.city }}</p>
-            <p>Ajouté le : {{ band.date_added }}</p>
-            <p>
-                {% if band.active %}
-                    Actif
-                {% else %}
-                    Inactif
-                {% endif %}
-            </p>
-            <p>Nombre d'album(s) possédé(s): {{ album_owned }}/{{ album_count }}</p>
-
+            <div class="bio-info">
+                <p>Pays - {{ band.country }}</p>
+                <p>Région - {{ band.region }}</p>
+                <p>Ville - {{ band.city }}</p>
+                <p>Ajouté le : {{ band.date_added }}</p>
+                <p>
+                    {% if band.active %}
+                        Actif
+                    {% else %}
+                        Inactif
+                    {% endif %}
+                </p>
+                <p>Nombre d'album(s) possédé(s): {{ album_owned }}/{{ album_count }}</p>
+            </div>
         </div>
         <div class="tableContainer">
             <h1>Discographie</h1>

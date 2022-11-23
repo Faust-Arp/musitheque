@@ -8,35 +8,35 @@
     <div id="library-content">
         <div class="library-img">
                 <img src="{{ album.thumbnail.url}}" alt="{{album.slug}}">
-                <form action="{% url 'library:edit-album' slug=album.slug %}">
+                <form action="{% url 'library:edit-album' pk=album.pk %}">
                     <button class="btn btn-edit">Modifier l'album</button>
                 </form>
-                <form action="{% url 'library:delete-album' slug=album.slug %}">
+                <form action="{% url 'library:delete-album' pk=album.pk %}">
                     <button class="btn btn-delete">Supprimer l'album</button>
                 </form>
-                <form action="{% url 'library:create-tracks' pk=album.id %}">
+                <form action="{% url 'library:create-tracks' pk=album.pk %}">
                     <button class="btn btn-edit">Modifier les morceaux</button>
                 </form>
         </div>
         <div class="bio">
             <h1>{{ album.title }}</h1>
-            <p>Groupe : {{ album.groupe.name }}</p>
-            <p>Sorti le {{ album.date_released }}</p>
-            <p>Écouté en {{ album.date_listened|date:'F Y' }}</p>
-            <p>Voix - {{ album.get_type_vocal_display }}</p>
-            <p>Genre Primaire - {% for genre_primary in album.genre_primary.all %}{{ genre_primary }}, {% endfor %}</p>
-            <p>Genre Secondaire -
-                {% if album.genre_secondary.all %}
-                    {% for genre_secondary in album.genre_secondary.all %}
-                        {{ genre_secondary }},
-                    {% endfor %}
-                {% else %}
-                    Aucun
-                {% endif %}
-            </p>
-            <p>Note : {{ album.rating }}/5</p>
-            <p></p>
-
+            <div class="bio-info">
+                <p>Groupe : {{ album.groupe.name }}</p>
+                <p>Sorti le {{ album.date_released }}</p>
+                <p>Écouté en {{ album.date_listened|date:'F Y' }}</p>
+                <p>Voix - {{ album.get_type_vocal_display }}</p>
+                <p>Genre Primaire - {% for genre_primary in album.genre_primary.all %}{{ genre_primary }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+                <p>Genre Secondaire -
+                    {% if album.genre_secondary.all %}
+                        {% for genre_secondary in album.genre_secondary.all %}
+                            {{ genre_secondary }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        Aucun
+                    {% endif %}
+                </p>
+                <p>Note : {{ album.rating }}/5</p>
+            </div>
         </div>
         <div class="tableContainer">
             <h1>Liste des morceaux</h1>
@@ -60,7 +60,7 @@
                             <td class="track-playlist">
                                 {% for playlist in track.playlist.all %}
                                     {% if playlist.type == "G" %}
-                                    <span class="fa fa-music" title="{{ playlist.name }}"></span>
+                                    <span class="fa fa-music" title="{{ playlist.name }}" style="color: {{playlist.color}};"></span>
                                     {% elif playlist.type == "Y"%}
                                     <span class="fa fa-calendar-check-o" title="{{ playlist.name }}"></span>
                                     {% elif playlist.type == "T"%}
@@ -71,16 +71,18 @@
                                 {% endfor %}
                             </td>
                             <td class="track-rating">
-                                {% for i in track.rating|time %}
-                                    <span class="fa fa-star checked"></span>
-                                {% endfor %}
-                                {% if track.rating|last == "5" %}
-                                    <span class="fa fa-star-half-full"></span>
+                                {% if track.rating %}
+                                    {% for i in track.rating|time %}
+                                        <span class="fa fa-star checked"></span>
+                                    {% endfor %}
+                                    {% if track.rating|last == "5" %}
+                                        <span class="fa fa-star-half-full"></span>
+                                    {% endif %}
+                                    {% for j in  track.rating|minus|time %}
+                                        <span class="fa fa-star-o"></span>
+                                    {% endfor %}
+                                    {{track.rating}}
                                 {% endif %}
-                                {% for j in  track.rating|minus|time %}
-                                    <span class="fa fa-star-o"></span>
-                                {% endfor %}
-                                {{track.rating}}
                             </td>
                         </tr>
                         {% endfor %}

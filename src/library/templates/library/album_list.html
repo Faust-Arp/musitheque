@@ -12,15 +12,6 @@
 
     <div class="bandList">
         <ul id="listeGroupe">
-            <li id="addAlbumButton">
-                <div class="img-band">
-                    <img src="https://picsum.photos/250/250" alt="Random Image">
-                </div>
-                <div class="name name-centered">
-                    <a href="{% url 'library:create-album' %}">Ajouter un album</a>
-                </div>
-            </li>
-
             {% for album in albums %}
                 <li id="{{ album.slug }}">
                     <div class="img-band">

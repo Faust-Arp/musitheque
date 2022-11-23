@@ -4,6 +4,28 @@ from django.forms import inlineformset_factory
 from library.models import Track, Album
 
 
+class AlbumCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AlbumCreateForm, self).__init__(*args, **kwargs)
+        self.fields['groupe'].readonly = True
+
+    class Meta:
+        model = Album
+        fields = [
+            "title",
+            "groupe",
+            "date_released",
+            "date_listened",
+            "type_vocal",
+            "type_album",
+            "owned",
+            "type_owned",
+            "genre_primary",
+            "genre_secondary",
+            "rating",
+            "thumbnail",
+        ]
+
 class TracksCreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):

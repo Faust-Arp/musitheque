@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'account',
     'library',
     'statistic',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -125,7 +126,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 AUTH_USER_MODEL = 'account.CustomUser'
-LOGIN_REDIRECT_URL = '/library/'
+LOGIN_REDIRECT_URL = '/library/bands'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'mediafiles'

@@ -27,7 +27,7 @@
                         <img src="{{ band.thumbnail.url}}" alt="{{band.slug}}">
                     </div>
                     <div class="name name-centered">
-                        <a href="{% url 'library:band' slug=band.slug %}">{{ band.name }}</a>
+                        <a href="{% url 'library:band' pk=band.pk %}">{{ band.name }}</a>
                     </div>
                 </li>
             {% endfor %}
