@@ -35,7 +35,13 @@
                         Aucun
                     {% endif %}
                 </p>
-                <p>Note : {{ album.rating }}/5</p>
+                <p>
+                    {% if album.rating %}
+                        {{ album.rating }}/5
+                    {% else %}
+                        Non Noté
+                    {% endif %}
+                </p>
             </div>
         </div>
         <div class="tableContainer">

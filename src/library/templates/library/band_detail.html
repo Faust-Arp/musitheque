@@ -44,7 +44,13 @@
                             <td><img src="{{ album.thumbnail.url }}" alt="{{album.slug}}" width="75" height="75"></td>
                             <td><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a></td>
                             <td>{{album.date_released|date:'Y'}}</td>
-                            <td>{{ album.rating }}/5</td>
+                            <td>
+                                {% if album.rating %}
+                                    {{ album.rating }}/5
+                                {% else %}
+                                    Non Noté
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
