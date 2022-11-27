@@ -176,9 +176,11 @@ class AlbumDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         album = Album.objects.get(pk=self.kwargs.get('pk'))
+        band = Band.objects.get(name=album.groupe)
         full_duration = get_album_duration(album.id)
         context['tracks'] = Track.objects.filter(album=album.id).order_by("number")
         context['full_duration'] = full_duration
+        context['band'] = band
         return context
 
 

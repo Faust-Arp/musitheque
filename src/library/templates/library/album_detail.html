@@ -21,7 +21,7 @@
         <div class="bio">
             <h1>{{ album.title }}</h1>
             <div class="bio-info">
-                <p>Groupe : {{ album.groupe.name }}</p>
+                <p>Groupe : <a href="{% url 'library:band' pk=band.pk %}">{{ album.groupe.name }}</a></p>
                 <p>Sorti le {{ album.date_released }}</p>
                 <p>Écouté en {{ album.date_listened|date:'F Y' }}</p>
                 <p>Voix - {{ album.get_type_vocal_display }}</p>
