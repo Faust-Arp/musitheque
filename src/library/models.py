@@ -59,7 +59,8 @@ class Album(models.Model):
     VOICE_STYLE_CHOICES = [
         ("HA", "Harsh"),
         ("CL", "Clean"),
-        ("MX", "Mixed")
+        ("MX", "Mixed"),
+        ("NO", "Instrumental")
     ]
 
     TYPE_OWNED_CHOICES = [
