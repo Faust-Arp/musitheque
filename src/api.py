@@ -96,9 +96,8 @@ def get_album_by_released_decade():
     return list_decades, list_albums_number
 
 
-def get_album_by_primary_genre():
+def get_album_by_primary_genre(albums):
 
-    albums = Album.objects.all()
     albums_by_primary_genre = {}
 
     for album in albums:
@@ -119,6 +118,7 @@ def get_album_by_primary_genre():
 
     return list_genres, list_albums_number
 
+
 def get_album_by_family():
 
     albums = Album.objects.all()
@@ -126,19 +126,15 @@ def get_album_by_family():
 
     for album in albums:
 
-        print(album)
         genres = list(album.genre_primary.all())
         families = []
 
         for genre in genres:
 
-            print(genre)
             if genre.family:
                 families.append(genre.family)
-                print(families)
 
         families = list(dict.fromkeys(families))
-        print(families)
 
         for family in families:
             str_family = str(family)
@@ -150,8 +146,29 @@ def get_album_by_family():
     list_families, albums_number = zip(*albums_by_family.items())
 
     all_families = list(list_families)
-    print(all_families)
     all_numbers = list(albums_number)
-    print(all_numbers)
 
     return all_families, all_numbers
+
+
+def get_album_by_family_genres(family):
+
+    genres = Genre.objects.filter(family=family)
+    albums = Album.objects.all()
+    albums_from_family = []
+
+    for album in albums:
+        print(album.title)
+        album_list_genre = list(album.genre_primary.all())
+        for genre in album_list_genre:
+            if genre in genres:
+                albums_from_family.append(album)
+
+    print(albums_from_family)
+
+    list_genres, list_albums_number = get_album_by_primary_genre(albums_from_family)
+
+    return list_genres, list_albums_number
+
+
+

@@ -10,7 +10,7 @@
         <select name="albumChartSelector" id="albumChartSelector" onchange="displayChart()">
             <option value="albumByYear">Albums par Années</option>
             <option value="albumByDecade">Albums par décénies</option>
-            <option value="albumByPrimaryGenre">Albums par genre</option>
+            <option value="metalAlbumByGenre">Albums par genre</option>
             <option value="albumByFamily">Albums par famille</option>
         </select>
     </div>
@@ -106,16 +106,16 @@
         </script>
     </div>
 
-    <div id="albumByPrimaryGenre" class="chart" style="display: none;">
-        <canvas id="canvasByPrimaryGenre" width="400px" height="400px"></canvas>
+    <div id="metalAlbumByGenre" class="chart" style="display: none;">
+        <canvas id="canvasByMetalGenre" width="400px" height="400px"></canvas>
         <script>
-        const ctx3 = document.getElementById('canvasByPrimaryGenre').getContext('2d');
+        const ctx3 = document.getElementById('canvasByMetalGenre').getContext('2d');
         const chartGenre = new Chart(ctx3, {
             type: 'radar',
             data: {
                 labels:  {{ genres|safe }},
                 datasets: [{
-                    label: 'Albums par genre',
+                    label: 'Albums par genre de métal',
                     data: {{ albums_genres }},
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgb(255, 99, 132)',

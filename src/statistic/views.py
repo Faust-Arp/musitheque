@@ -39,9 +39,10 @@ class StatsAlbumView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        albums = Album.objects.all()
         years, albums_year = api.get_album_by_released_year()
         decades, albums_decade = api.get_album_by_released_decade()
-        genres, albums_genres = api.get_album_by_primary_genre()
+        genres, albums_genres = api.get_album_by_family_genres("Metal")
         families, albums_families = api.get_album_by_family()
         context['years'] = years
         context['decades'] = decades
