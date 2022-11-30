@@ -106,18 +106,52 @@ def get_album_by_primary_genre():
         album_list_genre = list(album.genre_primary.all())
 
         for genre in album_list_genre:
-            str_genre= str(genre)
+            str_genre = str(genre)
             if str_genre in albums_by_primary_genre:
                 albums_by_primary_genre[str_genre] += 1
-                print(albums_by_primary_genre)
             else:
                 albums_by_primary_genre[str_genre] = 1
 
     genres, albums_number = zip(*albums_by_primary_genre.items())
 
     list_genres = list(genres)
-    print(list_genres)
     list_albums_number = list(albums_number)
-    print(list_albums_number)
 
     return list_genres, list_albums_number
+
+def get_album_by_family():
+
+    albums = Album.objects.all()
+    albums_by_family = {}
+
+    for album in albums:
+
+        print(album)
+        genres = list(album.genre_primary.all())
+        families = []
+
+        for genre in genres:
+
+            print(genre)
+            if genre.family:
+                families.append(genre.family)
+                print(families)
+
+        families = list(dict.fromkeys(families))
+        print(families)
+
+        for family in families:
+            str_family = str(family)
+            if str_family in albums_by_family:
+                albums_by_family[str_family] += 1
+            else:
+                albums_by_family[str_family] = 1
+
+    list_families, albums_number = zip(*albums_by_family.items())
+
+    all_families = list(list_families)
+    print(all_families)
+    all_numbers = list(albums_number)
+    print(all_numbers)
+
+    return all_families, all_numbers

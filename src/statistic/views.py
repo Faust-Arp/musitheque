@@ -42,11 +42,14 @@ class StatsAlbumView(ListView):
         years, albums_year = api.get_album_by_released_year()
         decades, albums_decade = api.get_album_by_released_decade()
         genres, albums_genres = api.get_album_by_primary_genre()
+        families, albums_families = api.get_album_by_family()
         context['years'] = years
         context['decades'] = decades
         context['albums_year'] = albums_year
         context['albums_decade'] = albums_decade
         context['genres'] = genres
         context['albums_genres'] = albums_genres
+        context['families'] = families
+        context['albums_families'] = albums_families
         context['form'] = self.filterset.form
         return context

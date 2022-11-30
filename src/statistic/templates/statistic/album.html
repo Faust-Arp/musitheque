@@ -11,6 +11,7 @@
             <option value="albumByYear">Albums par Années</option>
             <option value="albumByDecade">Albums par décénies</option>
             <option value="albumByPrimaryGenre">Albums par genre</option>
+            <option value="albumByFamily">Albums par famille</option>
         </select>
     </div>
 <br>
@@ -116,6 +117,41 @@
                 datasets: [{
                     label: 'Albums par genre',
                     data: {{ albums_genres }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    pointBackgroundColor: 'rgb(255, 99, 132)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(255, 99, 132)'
+                }]
+            },
+            options: {
+               scales: {
+                 r: {
+                    angleLines: {
+                        display: false
+                    },
+                    suggestedMin: 0,
+                    suggestedMax: 5,
+                    stepSize: 1
+                  },
+                },
+            }
+        });
+        </script>
+    </div>
+
+    <div id="albumByFamily" class="chart" style="display: none;">
+        <canvas id="canvasByFamily" width="400px" height="400px"></canvas>
+        <script>
+        const ctx4 = document.getElementById('canvasByFamily').getContext('2d');
+        const chartFamily = new Chart(ctx4, {
+            type: 'radar',
+            data: {
+                labels:  {{ families|safe }},
+                datasets: [{
+                    label: 'Albums par famille',
+                    data: {{ albums_families }},
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgb(255, 99, 132)',
                     pointBackgroundColor: 'rgb(255, 99, 132)',
