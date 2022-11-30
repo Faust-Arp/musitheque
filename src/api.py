@@ -96,20 +96,22 @@ def get_album_by_released_decade():
     return list_decades, list_albums_number
 
 
-def get_album_by_primary_genre(albums):
+def get_album_by_primary_genre(albums, family):
 
     albums_by_primary_genre = {}
 
     for album in albums:
 
         album_list_genre = list(album.genre_primary.all())
-
+        print(album.title)
         for genre in album_list_genre:
-            str_genre = str(genre)
-            if str_genre in albums_by_primary_genre:
-                albums_by_primary_genre[str_genre] += 1
-            else:
-                albums_by_primary_genre[str_genre] = 1
+            print(f"{genre.name} - {genre.family}")
+            if genre.family == family:
+                if genre.name in albums_by_primary_genre:
+                    albums_by_primary_genre[genre.name] += 1
+                else:
+                    albums_by_primary_genre[genre.name] = 1
+            print(albums_by_primary_genre)
 
     genres, albums_number = zip(*albums_by_primary_genre.items())
 
@@ -158,15 +160,12 @@ def get_album_by_family_genres(family):
     albums_from_family = []
 
     for album in albums:
-        print(album.title)
         album_list_genre = list(album.genre_primary.all())
         for genre in album_list_genre:
             if genre in genres:
                 albums_from_family.append(album)
 
-    print(albums_from_family)
-
-    list_genres, list_albums_number = get_album_by_primary_genre(albums_from_family)
+    list_genres, list_albums_number = get_album_by_primary_genre(albums_from_family, family)
 
     return list_genres, list_albums_number
 
