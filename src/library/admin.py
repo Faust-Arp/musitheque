@@ -19,6 +19,7 @@ class BandAdmin(admin.ModelAdmin):
 class GenreAdmin(admin.ModelAdmin):
     list_display = (
         "name",
+        "family",
     )
 
 
@@ -34,10 +35,12 @@ class PlaylistAdmin(admin.ModelAdmin):
 @admin.register(Album)
 class AlbumAdmin(admin.ModelAdmin):
     list_display = (
+        "pk",
         "title",
         "date_released",
         "owned",
         "rating",
+        "number_album",
     )
 
 

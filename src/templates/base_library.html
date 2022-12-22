@@ -9,15 +9,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="{% static 'javascript/script.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    {% block script %}
+    {% endblock %}
 </head>
 <body>
 
-    <nav>
+    <nav class="nav">
         <div class="navbar">
             <a href="{% url 'library:bands-list' %}">Artistes</a>
             <a href="{% url 'library:albums-list' %}">Albums</a>
-            <a href="{% url 'statistic:stats-band' %}">Statistiques des groupes</a>
-            <a href="{% url 'statistic:stats-album' %}">Statistiques des albums</a>
+            <a href="{% url 'library:playlists-list' %}">Playlists</a>
+            <a href="{% url 'statistic:band-by-country' %}">Statistiques</a>
             {% block nav %}{% endblock %}
         </div>
     </nav>
@@ -25,8 +27,9 @@
 
     <section id="library">
         {% block content %}
-
         {% endblock %}
     </section>
+
+
 </body>
 </html>

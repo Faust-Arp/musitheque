@@ -9,8 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 import api
 from library.forms import TracksCreateForm, TracksCreateFormSet, AlbumCreateForm
-from library.models import Band, Album, Track
-from api import get_album_duration
+from library.models import Band, Album, Track, Playlist
 
 
 class BandList(ListView):
@@ -177,7 +176,7 @@ class AlbumDetail(DetailView):
         context = super().get_context_data(**kwargs)
         album = Album.objects.get(pk=self.kwargs.get('pk'))
         band = Band.objects.get(name=album.groupe)
-        full_duration = get_album_duration(album.id)
+        full_duration = api.get_album_duration(album.id)
         context['tracks'] = Track.objects.filter(album=album.id).order_by("number")
         context['full_duration'] = full_duration
         context['band'] = band
@@ -226,3 +225,28 @@ class TrackCreate(UserPassesTestMixin, SingleObjectMixin, FormView):
     def test_func(self):
         return self.request.user.is_admin
 
+
+class PlaylistList(ListView):
+    model = Playlist
+    context_object_name = "playlists"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context['user'] = user
+        return context
+
+
+class PlaylistDetail(DetailView):
+    model = Playlist
+    context_object_name = "playlist"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        playlist = Playlist.objects.get(pk=self.kwargs.get('pk'))
+        number_of_tracks = Track.objects.filter(playlist__id=playlist.pk).count()
+        full_duration = api.get_playlist_duration(playlist.pk)
+        context['tracks'] = Track.objects.filter(playlist__id=playlist.pk).order_by("title")
+        context['full_duration'] = full_duration
+        context['number_of_tracks'] = number_of_tracks
+        return context

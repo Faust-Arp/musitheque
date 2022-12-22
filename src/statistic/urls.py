@@ -1,9 +1,12 @@
 from django.urls import path
-from statistic.views import StatsBandView, StatsAlbumView
+from statistic.views import BandByCountriesView, AlbumByYearsView, AlbumByDecadesView, AlbumByFamiliesView, AlbumByGenresView
 
 app_name = "statistic"
 
 urlpatterns = [
-    path('band/', StatsBandView.as_view(), name='stats-band'),
-    path('album/', StatsAlbumView.as_view(), name='stats-album'),
+    path('band/by_country', BandByCountriesView.as_view(), name='band-by-country'),
+    path('album/by_years', AlbumByYearsView.as_view(), name='album-by-years'),
+    path('album/by_decades', AlbumByDecadesView.as_view(), name='album-by-decades'),
+    path('album/by_families', AlbumByFamiliesView.as_view(), name='album-by-families'),
+    path('album/by_genres/<str:family>', AlbumByGenresView.as_view(), name='album-by-genres'),
 ]

@@ -10,10 +10,15 @@ body {
     width: 85%;
     background-color: White;
     margin: 55px auto;
-
 }
 
-nav{
+#statistic {
+    width: 85%;
+    background-color: White;
+    margin: 55px auto;
+}
+
+.nav{
     position: fixed;
     width: 100%;
     height: 50px;
@@ -34,7 +39,7 @@ nav{
     padding-bottom: 10px;
 }
 
-nav a {
+.nav a {
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 50px;
@@ -139,7 +144,6 @@ a:link, a:visited {
 
 #library-content {
     display: grid;
-    grid_template_rows: 2fr 3fr;
     grid-template-columns: 1fr 3fr;
     grid-template-areas: "img bio"
                          "img list";
@@ -310,14 +314,6 @@ a:link, a:visited {
     height: 250px;
 }
 
-.chart {
-    width: 33%;
-    text-align: center;
-    margin: 0 auto;
-    font-family: 'Mukta';
-    font-size: 20px;
-}
-
 .chartSelector {
     width: 33%;
     margin: 0 auto;
@@ -326,3 +322,36 @@ a:link, a:visited {
     text-align: center;
 }
 
+#statistic-content {
+    display: grid;
+    grid-template-columns: .6fr 3fr;
+    grid-template-areas: "sidebar chart"
+                         "sidebar find";
+    grid-gap: 10px;
+}
+
+.collapse {
+    grid-area: sidebar;
+    background-color: GhostWhite;
+    border: solid 1px grey;
+}
+
+.collapse ul {
+    padding: 10px;
+}
+
+.collapse li {
+    font-size: 15px;
+}
+
+.chart {
+    grid-area: chart;
+    height: 500px;
+    text-align: center;
+    font-family: 'Mukta';
+    font-size: 20px;
+}
+
+.filters {
+    grid-area: find;
+}

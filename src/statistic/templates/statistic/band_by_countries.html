@@ -1,0 +1,81 @@
+{% extends 'base_statistic.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Statistiques</title>
+{% endblock %}
+
+{% block content %}
+        <div class="chart">
+            <canvas id="bandByCountry" width="400px" height="400px"></canvas>
+            <script>
+            const ctx = document.getElementById('bandByCountry').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels:  {{ countries|safe }},
+                    datasets: [{
+                        label: 'Groupes par pays',
+                        data: {{bands_number}},
+                        backgroundColor: [
+                            '#FFA3DA',
+                            '#C095E8',
+                            '#AFBDFF',
+                            '#95DBE8',
+                            '#BDFFDB',
+                            '#A8DDE3',
+                            '#949DE3',
+                        ],
+                        borderColor: [
+                            '#FF30C6',
+                            '#812CE8',
+                            '#3C6AFF',
+                            '#2CD6E8',
+                            '#4AFF8F',
+                            '#4FD5E3',
+                            '#4253E3',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                     maintainAspectRatio: false,
+                     indexAxis: 'y',
+                }
+            });
+            </script>
+        </div>
+        <div class="filters">
+                <form method="GET" enctype="multipart/form-data" action="{%url 'statistic:band-by-country'%}" class="form form-create">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Chercher" class="btn btn-submit">
+                </form>
+
+                <h1>Liste des albums</h1>
+                <div class="tableContainer">
+                    <table>
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Pays</th>
+                                    <th>Région</th>
+                                    <th>Ville</th>
+                                    <th>Actif</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for band in bands %}
+                                    <tr>
+                                        <td>{{ band.name }}</td>
+                                        <td>{{ band.country }}</td>
+                                        <td>{{ band.region }}</td>
+                                        <td>{{ band.city }}</td>
+                                        <td>{{ band.active }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+{% endblock %}

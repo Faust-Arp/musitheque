@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="{% static 'javascript/script.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    {% block script %}
+    {% endblock %}
+</head>
+<body>
+
+    <nav>
+        <div class="navbar">
+            <a href="{% url 'library:bands-list' %}">Artistes</a>
+            <a href="{% url 'library:albums-list' %}">Albums</a>
+            <a href="{% url 'library:playlists-list' %}">Playlists</a>
+            <a href="{% url 'statistic:band-by-country' %}">Statistiques</a>
+            {% block nav %}{% endblock %}
+        </div>
+    </nav>
+
+
+    <section id="statistic">
+        <div id="statistic-content">
+        <nav class="collapse">
+            <ul>
+                <li>Artistes
+                    <ul>
+                        <li><a href="{% url 'statistic:band-by-country' %}">Par pays</a></li>
+                    </ul>
+                </li>
+                <li>Albums
+                    <ul>
+                        <li><a href="{% url 'statistic:album-by-years' %}">Par Années</a></li>
+                        <li><a href="{% url 'statistic:album-by-decades' %}">Par décénies</a></li>
+                        <li><a href="{% url 'statistic:album-by-families' %}">Par famille</a></li>
+                        <li>Par genre
+                            <ul>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Ambient'%}">D'Ambient'</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Country'%}">De Country</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Dance'%}">De Dance</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Electronic'%}">D'Electro</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Folk'%}">De Folk</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Hip Hop'%}">De Hip Hop</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Jazz'%}">De Jazz</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Metal'%}">De Métal</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Regional'%}">De Musique Régionale</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Pop'%}">De Pop</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Punk'%}">De Punk</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Psychedelia'%}">De Psychedelia</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='R&B'%}">De R&B</a></li>
+                                <li><a href="{% url 'statistic:album-by-genres' family='Rock'%}">De Rock</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        {% block content %}
+        {% endblock %}
+        </div>
+    </section>
+
+
+</body>
+</html>

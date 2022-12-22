@@ -12,22 +12,22 @@
 
     <div class="bandList">
         <ul id="listeGroupe">
-            <li id="addBandButton">
+            <li id="addPlaylistButton">
                 <div class="img-band">
                     <img src="https://picsum.photos/250/250" alt="Random Image">
                 </div>
                 <div class="name name-centered">
-                    <a href="{% url 'library:create-band' %}">Ajouter un artiste</a>
+                    <a href="{% url 'library:create-band' %}">Ajouter une playlist</a>
                 </div>
             </li>
 
-            {% for band in bands %}
-                <li id="{{ band.slug }}">
+            {% for playlist in playlists %}
+                <li id="{{ playlist.slug }}">
                     <div class="img-band">
-                        <img src="{{ band.thumbnail.url}}" alt="{{band.slug}}">
+                        <img src="https://picsum.photos/250/250" alt="Random Image">
                     </div>
                     <div class="name name-centered">
-                        <a href="{% url 'library:band' pk=band.pk %}">{{ band.name }}</a>
+                        <a href="{% url 'library:playlist' pk=playlist.pk %}">{{ playlist.name }}</a>
                     </div>
                 </li>
             {% endfor %}

@@ -13,6 +13,17 @@ def get_album_duration(id):
     return full_duration
 
 
+def get_playlist_duration(id):
+
+    track_list = Track.objects.filter(playlist__id=id)
+    playlist_duration = timedelta(seconds=0)
+
+    for track in track_list:
+        playlist_duration += track.duration
+
+    return playlist_duration
+
+
 def get_album_owned_count_for_band(id):
     albums = Album.objects.filter(groupe=id).count
     print(albums)
@@ -39,8 +50,14 @@ def get_band_count_by_country():
             # Sinon on ajoute le pays au dictionnaire avec la valeur 1
             band_by_countries[band.country] = 1
 
+    filtered_band_by_country = {}
+
+    for country in band_by_countries:
+        if band_by_countries[country] > 4:
+            filtered_band_by_country[country] = band_by_countries[country]
+
     # On tri le dictionnaire par valeur descendante avec le reverse à True
-    sorted_band_by_countries = sorted(band_by_countries.items(), key=lambda x: x[1], reverse=True)
+    sorted_band_by_countries = sorted(filtered_band_by_country.items(), key=lambda x: x[1], reverse=True)
     # Comme sorted ramène une liste on converti la liste en dictionnaire
     ordered_dict = dict(sorted_band_by_countries)
 
@@ -103,15 +120,13 @@ def get_album_by_primary_genre(albums, family):
     for album in albums:
 
         album_list_genre = list(album.genre_primary.all())
-        print(album.title)
+
         for genre in album_list_genre:
-            print(f"{genre.name} - {genre.family}")
             if genre.family == family:
                 if genre.name in albums_by_primary_genre:
                     albums_by_primary_genre[genre.name] += 1
                 else:
                     albums_by_primary_genre[genre.name] = 1
-            print(albums_by_primary_genre)
 
     genres, albums_number = zip(*albums_by_primary_genre.items())
 
@@ -123,7 +138,7 @@ def get_album_by_primary_genre(albums, family):
 
 def get_album_by_family():
 
-    albums = Album.objects.all()
+    albums = Album.objects.all().order_by('title')
     albums_by_family = {}
 
     for album in albums:
@@ -134,9 +149,8 @@ def get_album_by_family():
         for genre in genres:
 
             if genre.family:
-                families.append(genre.family)
-
-        families = list(dict.fromkeys(families))
+                if genre.family not in families:
+                    families.append(genre.family)
 
         for family in families:
             str_family = str(family)
@@ -165,9 +179,25 @@ def get_album_by_family_genres(family):
             if genre in genres:
                 albums_from_family.append(album)
 
-    list_genres, list_albums_number = get_album_by_primary_genre(albums_from_family, family)
+    if albums_from_family:
 
-    return list_genres, list_albums_number
+        list_genres, list_albums_number = get_album_by_primary_genre(albums_from_family, family)
+
+        return list_genres, list_albums_number
+
+    return [], []
+
+
+def get_all_families():
+
+    genres = Genre.objects.all().order_by('family')
+    families = []
+
+    for genre in genres:
+        if genre.family not in families:
+            families.append(genre.family)
+
+    return families
 
 
 

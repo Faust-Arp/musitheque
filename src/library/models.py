@@ -1,6 +1,5 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.urls import reverse
 from django.utils.text import slugify
 
 
@@ -81,6 +80,7 @@ class Album(models.Model):
     type_owned = models.CharField(max_length=2, choices=TYPE_OWNED_CHOICES, verbose_name="Type possédé", blank=True)
     genre_primary = models.ManyToManyField(Genre, related_name="primary_genre", verbose_name="Genre Primaire")
     genre_secondary = models.ManyToManyField(Genre,related_name="secondary_genre", verbose_name="Genre Secondaire", blank=True)
+    number_album = models.PositiveSmallIntegerField(default=1, verbose_name="Nombre d'albums")
     owned = models.BooleanField(default=False, verbose_name="Possédé")
     rating = models.FloatField(blank=True, null=True, verbose_name="Note")
     thumbnail = models.ImageField(blank=True, upload_to='albums')
@@ -97,11 +97,6 @@ class Album(models.Model):
             self.slug = slugify(self.title)
 
         super().save(*args, **kwargs)
-
-    # def get_absolute_url(self, **kwargs):
-    #     album_id = Album.objects.get(pk=args.get('pk'))
-    #     print(album_id)
-    #     return reverse('library:album', kwargs=)
 
 
 class Playlist(models.Model):
@@ -138,7 +133,7 @@ class Playlist(models.Model):
 
 class Track(models.Model):
     title = models.CharField(max_length=50, verbose_name="Titre")
-    slug = models.SlugField(max_length=50, unique=True, blank=True)
+    slug = models.SlugField(max_length=50, blank=True)
     album = models.ForeignKey("Album", on_delete=models.CASCADE)
     playlist = models.ManyToManyField(Playlist, related_name="playlist", blank=True)
     number = models.IntegerField(verbose_name="Numéro")
@@ -146,13 +141,11 @@ class Track(models.Model):
     duration = models.DurationField(verbose_name="durée")
     favorite = models.BooleanField(blank=True, default=False, verbose_name="favori")
     date_added = models.DateField(auto_now=True)
-    rating = models.DecimalField(
+    rating = models.FloatField(
         blank=True,
         null=True,
         validators=[MaxValueValidator(5), MinValueValidator(0)],
         verbose_name="Note",
-        max_digits=2,
-        decimal_places=1
     )
 
     class Meta:
@@ -167,9 +160,6 @@ class Track(models.Model):
             self.slug = slugify(self.title)
 
         super().save(*args, **kwargs)
-
-    # def get_absolute_url(self):
-    #     return reverse('library:home')
 
 
 

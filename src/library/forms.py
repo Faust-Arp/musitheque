@@ -14,6 +14,7 @@ class AlbumCreateForm(forms.ModelForm):
         fields = [
             "title",
             "groupe",
+            "number_album",
             "date_released",
             "date_listened",
             "type_vocal",
@@ -26,31 +27,24 @@ class AlbumCreateForm(forms.ModelForm):
             "thumbnail",
         ]
 
+
 class TracksCreateForm(forms.ModelForm):
+
+    rating = forms.FloatField(min_value=0, max_value=5, step_size=0.5, required=False)
 
     def __init__(self, *args, **kwargs):
         super(TracksCreateForm, self).__init__(*args, **kwargs)
-        self.fields['album'].readonly = True
 
     class Meta:
         model = Track
         fields = [
             "number",
             "title",
-            "album",
             "duration",
             "playlist",
-            "favorite",
             "rating",
+            "favorite"
         ]
 
 
-TracksCreateFormSet = inlineformset_factory(Album, Track, fields=[
-            "number",
-            "title",
-            "album",
-            "duration",
-            "playlist",
-            "favorite",
-            "rating",
-        ], extra=1,)
+TracksCreateFormSet = inlineformset_factory(Album, Track, form=TracksCreateForm, extra=1,)

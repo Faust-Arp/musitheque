@@ -1,0 +1,81 @@
+{% extends 'base_statistic.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Statistiques</title>
+{% endblock %}
+
+{% block content %}
+    <div id="albumByFamily" class="chart">
+        <canvas id="canvasByFamily" width="400px" height="400px"></canvas>
+        <script>
+        const ctx4 = document.getElementById('canvasByFamily').getContext('2d');
+        const chartFamily = new Chart(ctx4, {
+            type: 'radar',
+            data: {
+                labels:  {{ families|safe }},
+                datasets: [{
+                    label: 'Albums par famille',
+                    data: {{ albums_families }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    pointBackgroundColor: 'rgb(255, 99, 132)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(255, 99, 132)'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                  r: {
+                     angleLines: {
+                         display: false
+                     },
+                     suggestedMin: 0,
+                     suggestedMax: 5,
+                     stepSize: 1
+                   },
+                 },
+            }
+        });
+        </script>
+    </div>
+
+    <div class="filters">
+        <form method="GET" enctype="multipart/form-data" action="{%url 'statistic:album-by-families'%}" class="form form-create">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Chercher" class="btn btn-submit">
+        </form>
+
+        <h1>Liste des albums</h1>
+        <div class="tableContainer">
+            <table>
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Groupe</th>
+                            <th>Sortie</th>
+                            <th>Écouté</th>
+                            <th>Note</th>
+                            <th>Voix</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for album in albums %}
+                            <tr>
+                                <td>{{ album.title }}</td>
+                                <td>{{ album.groupe.name }}</td>
+                                <td>{{ album.date_released|date:'Y' }}</td>
+                                <td>{{ album.date_listened|date:'Y' }}</td>
+                                <td>{{ album.rating }}</td>
+                                <td>{{ album.get_type_vocal_display }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+
+{% endblock %}

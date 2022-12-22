@@ -1,0 +1,62 @@
+{% extends 'base_library.html' %}
+{%load static%}
+{% load library_extras %}
+
+{% block title%} <title>{{ album.title }}</title> {% endblock %}
+
+{% block content %}
+    <div id="library-content">
+        <div class="library-img">
+                <img src="https://picsum.photos/250/250" alt="Random Image">
+        </div>
+        <div class="bio">
+            <h1>{{ playlist.name }}</h1>
+            <div class="bio-info">
+                <p>Durée : {{ full_duration }}</p>
+                <p>Nombre de morceaux : {{ number_of_tracks }}</p>
+            </div>
+        </div>
+        <div class="tableContainer">
+            <h1>Liste des morceaux</h1>
+            <table id="displayDetails">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">#</th>
+                        <th onclick="sortTable(1)">Titre</th>
+                        <th onclick="sortTable(2)">Durée</th>
+                        <th onclick="sortTable(3)">Album</th>
+                        <th onclick="sortTable(4)">Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for track in tracks %}
+                        <tr>
+                            <td class="track-number">{{ forloop.counter }}</td>
+                            <td class="track-title">{{track.title}}</td>
+                            <td class="track-duration">{{track.duration}}</td>
+                            <td class="track-album">{{track.album}}</td>
+                            <td class="track-rating">
+                                {% if track.rating %}
+                                    {% for i in track.rating|time %}
+                                        <span class="fa fa-star checked"></span>
+                                    {% endfor %}
+                                    {% if track.rating|last == "5" %}
+                                        <span class="fa fa-star-half-full"></span>
+                                    {% endif %}
+                                    {% for j in  track.rating|minus|time %}
+                                        <span class="fa fa-star-o"></span>
+                                    {% endfor %}
+                                    {{track.rating}}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
