@@ -11,6 +11,15 @@
 
     <div class="bandList">
         <ul id="listeGroupe">
+            <li id="albumCount">
+                <div class="img-band">
+                    <p>{{ albums.count }} albums</p>
+                </div>
+                <div class="name name-centered">
+                    <a href="{% url 'statistic:album-by-years' %}">Stats des albums</a>
+                </div>
+            </li>
+
             {% for album in albums %}
                 <li id="{{ album.slug }}">
                     <div class="img-band">

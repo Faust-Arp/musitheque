@@ -7,7 +7,8 @@
     {% endblock %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="{% static 'javascript/script.js' %}"></script>
+    <script src="{% static 'javascript/script.js'%}"></script>
+    <script src="{% static 'javascript/multiselect-dropdown.js'%}" ></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     {% block script %}
     {% endblock %}
@@ -29,7 +30,5 @@
         {% block content %}
         {% endblock %}
     </section>
-
-
 </body>
 </html>

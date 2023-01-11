@@ -24,7 +24,6 @@
         </div>
     </nav>
 
-
     <section id="statistic">
         <div id="statistic-content">
         <nav class="collapse">
@@ -36,7 +35,8 @@
                 </li>
                 <li>Albums
                     <ul>
-                        <li><a href="{% url 'statistic:album-by-years' %}">Par Années</a></li>
+                        <li><a href="{% url 'statistic:album-by-years' %}">Par années</a></li>
+                        <li><a href="{% url 'statistic:album-by-rating' %}">Par notes</a></li>
                         <li><a href="{% url 'statistic:album-by-decades' %}">Par décénies</a></li>
                         <li><a href="{% url 'statistic:album-by-families' %}">Par famille</a></li>
                         <li>Par genre
@@ -55,9 +55,9 @@
                                 <li><a href="{% url 'statistic:album-by-genres' family='Psychedelia'%}">De Psychedelia</a></li>
                                 <li><a href="{% url 'statistic:album-by-genres' family='R&B'%}">De R&B</a></li>
                                 <li><a href="{% url 'statistic:album-by-genres' family='Rock'%}">De Rock</a></li>
-
                             </ul>
                         </li>
+                        <li><a href="{% url 'statistic:listened-released' %}">Par écoute</a></li>
                     </ul>
                 </li>
             </ul>

@@ -47,6 +47,8 @@ class AlbumAdmin(admin.ModelAdmin):
 @admin.register(Track)
 class TrackAdmin(admin.ModelAdmin):
     list_display = (
+        "pk",
+        "number",
         "title",
         "duration",
         "favorite",

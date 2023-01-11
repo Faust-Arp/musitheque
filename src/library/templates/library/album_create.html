@@ -15,4 +15,18 @@
         </form>
     </div>
 
+    <script>
+        var checkbox = document.querySelector("input[name=owned]");
+        var typeOwned = document.getElementById("id_type_owned");
+
+        checkbox.addEventListener('change', function() {
+          if (this.checked) {
+            typeOwned.removeAttribute("hidden");
+
+          } else {
+            typeOwned.setAttribute("hidden", true);
+          }
+        });
+    </script>
+
 {% endblock %}

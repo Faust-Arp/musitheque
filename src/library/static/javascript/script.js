@@ -57,7 +57,7 @@ function search(){
 // Fonction d'ajout de formulaire ajoutant des morceaux à un albums
 function addRow(){
 
-    var emptyForm = document.querySelector('#empty-form');// Initialisation de la variable initiale avec le formulaire de base
+    var emptyForm = document.querySelector('#formTrackRow');// Initialisation de la variable initiale avec le formulaire de base
     var i = 1;// Initialisation de la variable de la boucle avec pour valeur 1
     var nbRow = document.getElementById("nbRow").value;// Initialisation de la variable contenant la valeur du widget nombre de ligne
     var totalFormId = document.getElementById('id_track_set-TOTAL_FORMS');// Initialisation de la variable contenant le formulaire
@@ -68,27 +68,26 @@ function addRow(){
 
     while (i <= nbRow){// Tant que i est inférieur ou égal à la variable du nombre de ligne
 
-      var clone = emptyForm.cloneNode(true); // On crée un clone du formulaire de base
+        var clone = emptyForm.cloneNode(true); // On crée un clone du formulaire de base
 
-      var btn = document.createElement("button");// On crée un bouton qui servira à supprimer la ligne
-      btn.innerHTML = '-';// On lui ajoute du texte
-      btn.setAttribute('class', 'delete-row btn-delete');// On lui donne une class
-      btn.setAttribute('type', 'button')// On lui donne le type button pour ne pas qu'il envoie le formulaire lors d'un clic
-      btn.setAttribute('onclick', 'deleteRow()');// On lui ajoute le eventListener onclick qui appelle la fonction de suppression
+        var btn = document.createElement("button");// On crée un bouton qui servira à supprimer la ligne
+        btn.innerHTML = '-';// On lui ajoute du texte
+        btn.setAttribute('class', 'delete-row btn-delete');// On lui donne une class
+        btn.setAttribute('type', 'button')// On lui donne le type button pour ne pas qu'il envoie le formulaire lors d'un clic
+        btn.setAttribute('onclick', 'deleteRow()');// On lui ajoute le eventListener onclick qui appelle la fonction de suppression
 
-      clone.setAttribute('class', 'track-row');// On change la classe du clone
-      clone.setAttribute('id', `form-${currentFormCount}`);// On change l'ID du clone
-      btn.setAttribute('onclick', 'deleteRow("'+clone.id+'")');// On ajoute le paramètre de la fonction avec le id du div qui contient la ligne
-      clone.innerHTML = clone.innerHTML.replace(regex, currentFormCount)// On remplace la regular expression par le nombre de formulaire en cours
-      clone.appendChild(btn);// On ajoute le bouton à la fin de la ligne
+        clone.setAttribute('class', 'track-row');// On change la classe du clone
+        clone.setAttribute('id', `form-${currentFormCount}`);// On change l'ID du clone
+        btn.setAttribute('onclick', 'deleteRow("'+clone.id+'")');// On ajoute le paramètre de la fonction avec le id du div qui contient la ligne
+        clone.innerHTML = clone.innerHTML.replace(regex, currentFormCount)// On remplace la regular expression par le nombre de formulaire en cours
+        clone.appendChild(btn);// On ajoute le bouton à la fin de la ligne
 
-      submitButton.before(clone);// Et on l'ajoute avant le bouton submit
+        submitButton.before(clone);// Et on l'ajoute avant le bouton submit
 
-      i++;// On incérmente i de 1
-      currentFormCount++;// On incérmente le nombre de formulaire en cours de 1
-      totalFormId.setAttribute('value', currentFormCount)// On change la valeur de id_track_set-TOTAL_FORMS pour le nombre de formulaire
+        i++;// On incérmente i de 1
+        currentFormCount++;// On incérmente le nombre de formulaire en cours de 1
+        totalFormId.setAttribute('value', currentFormCount)// On change la valeur de id_track_set-TOTAL_FORMS pour le nombre de formulaire
     }
-
 }
 
 function deleteRow(formId){

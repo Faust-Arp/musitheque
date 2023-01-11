@@ -6,7 +6,7 @@ class AlbumFilter(django_filters.FilterSet):
     class Meta:
         model = Album
         fields = {
-            'title' : ['icontains'],
+            'title': ['icontains'],
             'groupe__name': ['icontains'],
             'date_released': ['year'],
             'date_listened': ['year'],
@@ -19,9 +19,9 @@ class BandFilter(django_filters.FilterSet):
     class Meta:
         model = Band
         fields = {
-            'name' : ['icontains'],
-            'country' : ['icontains'],
-            'region' : ['icontains'],
-            'city' : ['icontains'],
-            'active' : ['exact']
+            'name': ['icontains'],
+            'country': ['icontains'],
+            'region': ['icontains'],
+            'city': ['icontains'],
+            'active': ['exact']
         }

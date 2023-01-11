@@ -140,20 +140,7 @@ class AlbumCreate(UserPassesTestMixin, CreateView):
 class AlbumEdit(UserPassesTestMixin, UpdateView):
     model = Album
     template_name = "library/album_create.html"
-    fields = [
-        "title",
-        "groupe",
-        "date_released",
-        "date_listened",
-        "type_vocal",
-        "type_album",
-        "type_owned",
-        "genre_primary",
-        "genre_secondary",
-        "owned",
-        "rating",
-        "thumbnail",
-    ]
+    form_class = AlbumCreateForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

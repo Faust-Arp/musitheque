@@ -119,3 +119,40 @@ class AlbumByGenresView(ListView):
         context['form'] = self.filterset.form
         return context
 
+
+class ListenedReleasedView(ListView):
+    model = Album
+    template_name = "statistic/album_listened_album_released.html"
+    context_object_name = "bands"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        years, listened_count, released_count = api.get_album_number_by_listened_and_released_year()
+        context['years'] = years
+        context['listened_count'] = listened_count
+        context['released_count'] = released_count
+        return context
+
+
+class AlbumByRating(ListView):
+    model = Album
+    queryset = Album.objects.all()
+    template_name = "statistic/album_by_rating.html"
+    context_object_name = "albums"
+
+    def get_queryset(self):
+
+        queryset = super().get_queryset()
+        self.filterset = AlbumFilter(self.request.GET, queryset=queryset)
+        return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        rates, albums_rating = api.get_album_by_rating()
+        context['rates'] = rates
+        context['albums_rating'] = albums_rating
+
+        context['form'] = self.filterset.form
+        return context

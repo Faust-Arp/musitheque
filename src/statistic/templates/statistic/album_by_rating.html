@@ -6,44 +6,50 @@
 {% endblock %}
 
 {% block content %}
-    <div id="albumByFamily" class="chart">
-        <canvas id="canvasByFamily" width="400px" height="400px"></canvas>
+    <div id="albumByRating" class="chart">
+        <canvas id="canvasByRating" width="400px" height="400px"></canvas>
         <script>
-        const ctx4 = document.getElementById('canvasByFamily').getContext('2d');
-        const chartFamily = new Chart(ctx4, {
-            type: 'radar',
+        const ctx = document.getElementById('canvasByRating').getContext('2d');
+        const chartRating = new Chart(ctx, {
+            type: 'bar',
             data: {
-                labels:  {{ families|safe }},
+                labels:  {{ rates|safe }},
                 datasets: [{
-                    label: 'Albums par famille',
-                    data: {{ albums_families }},
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    pointBackgroundColor: 'rgb(255, 99, 132)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgb(255, 99, 132)'
+                    label: 'Albums par note',
+                    data: {{albums_rating}},
+                    backgroundColor: [
+                        '#FFA3DA',
+                        '#C095E8',
+                        '#AFBDFF',
+                        '#95DBE8',
+                        '#BDFFDB',
+                        '#A8DDE3',
+                        '#949DE3',
+                    ],
+                    borderColor: [
+                        '#FF30C6',
+                        '#812CE8',
+                        '#3C6AFF',
+                        '#2CD6E8',
+                        '#4AFF8F',
+                        '#4FD5E3',
+                        '#4253E3',
+                    ],
+                    borderWidth: 1,
+                    barPercentage: .3,
+                    categoryPercentage: .8
                 }]
             },
             options: {
-                maintainAspectRatio: false,
-                scales: {
-                  r: {
-                     angleLines: {
-                         display: false
-                     },
-                     suggestedMin: 0,
-                     suggestedMax: 5,
-                     stepSize: 1
-                   },
-                 },
+                 maintainAspectRatio: false,
+                 indexAxis: 'y',
             }
         });
         </script>
     </div>
 
     <div class="filters">
-        <form method="GET" enctype="multipart/form-data" action="{%url 'statistic:band-by-country'%}" class="form form-create">
+        <form method="GET" enctype="multipart/form-data" action="{%url 'statistic:album-by-years'%}" class="form form-create">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Chercher" class="btn btn-submit">
@@ -58,8 +64,8 @@
                             <th onclick="sortTable(1)">Groupe</th>
                             <th onclick="sortTable(2)">Sortie</th>
                             <th onclick="sortTable(3)">Écouté</th>
-                            <th onclick="sortTable(4)">Note</th>
-                            <th onclick="sortTable(5)">Voix</th>
+                            <th onclick="sortTable(5)">Note</th>
+                            <th onclick="sortTable(6)">Voix</th>
                         </tr>
                     </thead>
                     <tbody>

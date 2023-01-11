@@ -53,7 +53,7 @@
     </div>
 
     <div class="filters">
-        <form method="GET" enctype="multipart/form-data" action="{%url 'statistic:album-by-decades'%}" class="form form-create">
+        <form method="GET" enctype="multipart/form-data" action="{%url 'statistic:band-by-country'%}" class="form form-create">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Chercher" class="btn btn-submit">
@@ -61,15 +61,15 @@
 
         <h1>Liste des albums</h1>
         <div class="tableContainer">
-            <table>
+            <table id="displayDetails">
                     <thead>
                         <tr>
-                            <th>Titre</th>
-                            <th>Groupe</th>
-                            <th>Sortie</th>
-                            <th>Écouté</th>
-                            <th>Note</th>
-                            <th>Voix</th>
+                            <th onclick="sortTable(0)">Titre</th>
+                            <th onclick="sortTable(1)">Groupe</th>
+                            <th onclick="sortTable(2)">Sortie</th>
+                            <th onclick="sortTable(3)">Écouté</th>
+                            <th onclick="sortTable(4)">Note</th>
+                            <th onclick="sortTable(5)">Voix</th>
                         </tr>
                     </thead>
                     <tbody>

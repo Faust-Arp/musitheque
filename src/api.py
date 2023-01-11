@@ -1,10 +1,11 @@
 from library.models import Band, Genre, Album, Track
-from datetime import timedelta, datetime, date
+from datetime import timedelta
+import numpy as np
 
 
-def get_album_duration(id):
+def get_album_duration(pk):
 
-    track_list = Track.objects.filter(album=id)
+    track_list = Track.objects.filter(album=pk)
     full_duration = timedelta(seconds=0)
 
     for track in track_list:
@@ -13,9 +14,9 @@ def get_album_duration(id):
     return full_duration
 
 
-def get_playlist_duration(id):
+def get_playlist_duration(pk):
 
-    track_list = Track.objects.filter(playlist__id=id)
+    track_list = Track.objects.filter(playlist__id=pk)
     playlist_duration = timedelta(seconds=0)
 
     for track in track_list:
@@ -24,10 +25,10 @@ def get_playlist_duration(id):
     return playlist_duration
 
 
-def get_album_owned_count_for_band(id):
-    albums = Album.objects.filter(groupe=id).count
+def get_album_owned_count_for_band(pk):
+    albums = Album.objects.filter(groupe=pk).count
     print(albums)
-    album_owned = Album.objects.filter(groupe=id, owned=True).count
+    album_owned = Album.objects.filter(groupe=pk, owned=True).count
     print(album_owned)
 
     return album_owned, albums
@@ -200,4 +201,27 @@ def get_all_families():
     return families
 
 
+def get_album_number_by_listened_and_released_year():
+
+    years = [*range(2000, 2024, 1)]
+    listened_count = []
+    released_count = []
+
+    for year in years:
+        listened_count.append(Album.objects.filter(date_listened__year=year).count())
+        released_count.append(Album.objects.filter(date_released__year=year).count())
+
+    return years, listened_count, released_count
+
+
+def get_album_by_rating():
+
+    rates = [*np.arange(0, 5.5, 0.5)]
+    print(rates)
+    rates_count = []
+
+    for rate in rates:
+        rates_count.append(Album.objects.filter(rating=rate).count())
+
+    return rates, rates_count
 

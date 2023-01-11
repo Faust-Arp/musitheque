@@ -5,9 +5,16 @@ from library.models import Track, Album
 
 
 class AlbumCreateForm(forms.ModelForm):
+    rating = forms.FloatField(min_value=0, max_value=5, step_size=0.5, required=False)
+
     def __init__(self, *args, **kwargs):
         super(AlbumCreateForm, self).__init__(*args, **kwargs)
         self.fields['groupe'].readonly = True
+        self.fields['genre_primary'].widget.attrs['multiselect-search'] = 'true'
+        self.fields['genre_secondary'].widget.attrs['multiselect-search'] = 'true'
+        self.fields['type_owned'].label = ''
+        self.fields['type_owned'].widget.attrs['hidden'] = 'true'
+        self.fields['owned'].widget.attrs['hidden'] = 'true'
 
     class Meta:
         model = Album
@@ -31,9 +38,11 @@ class AlbumCreateForm(forms.ModelForm):
 class TracksCreateForm(forms.ModelForm):
 
     rating = forms.FloatField(min_value=0, max_value=5, step_size=0.5, required=False)
+    number = forms.IntegerField(label="")
 
     def __init__(self, *args, **kwargs):
         super(TracksCreateForm, self).__init__(*args, **kwargs)
+        self.fields["playlist"].widget.attrs["multiselect-search"] = "true"
 
     class Meta:
         model = Track
@@ -46,5 +55,4 @@ class TracksCreateForm(forms.ModelForm):
             "favorite"
         ]
 
-
-TracksCreateFormSet = inlineformset_factory(Album, Track, form=TracksCreateForm, extra=1,)
+TracksCreateFormSet = inlineformset_factory(Album, Track, form=TracksCreateForm, extra=20,)

@@ -1,0 +1,43 @@
+{% extends 'base_statistic.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Statistiques</title>
+{% endblock %}
+
+{% block content %}
+    <div id="albumListenedReleased" class="chart">
+        <canvas id="canvasAlbumListenedReleased" width="400px" height="400px"></canvas>
+        <script>
+        const ctx = document.getElementById('canvasAlbumListenedReleased').getContext('2d');
+        const chartAlbumListenedReleased = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels:  {{ years|safe }},
+                datasets: [
+                    {
+                    label: 'Albums écoutés',
+                    data: {{listened_count}},
+                    borderColor:'#FFA3DA',
+                    backgroundColor: '#FFA3DA',
+                    },
+                    {
+                    label: 'Albums sortis',
+                    data: {{released_count}},
+                    borderColor: '#949DE3',
+                    backgroundColor: '#949DE3',
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        </script>
+    </div>
+{% endblock %}
