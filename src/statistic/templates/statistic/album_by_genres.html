@@ -7,6 +7,7 @@
 
 {% block content %}
     <div id="albumByGenre" class="chart">
+        {% if genres_family %}
         <canvas id="canvasByGenre" width="400px" height="400px"></canvas>
         <script>
             const ctx = document.getElementById('canvasByGenre').getContext('2d');
@@ -40,6 +41,9 @@
                 }
             });
         </script>
+        {% else %}
+        <p>Pas de données pour {{ family }}</p>
+        {% endif %}
     </div>
 
     <div class="filters">

@@ -27,9 +27,7 @@ def get_playlist_duration(pk):
 
 def get_album_owned_count_for_band(pk):
     albums = Album.objects.filter(groupe=pk).count
-    print(albums)
     album_owned = Album.objects.filter(groupe=pk, owned=True).count
-    print(album_owned)
 
     return album_owned, albums
 
@@ -126,10 +124,21 @@ def get_album_by_primary_genre(albums, family):
             if genre.family == family:
                 if genre.name in albums_by_primary_genre:
                     albums_by_primary_genre[genre.name] += 1
+
                 else:
                     albums_by_primary_genre[genre.name] = 1
 
-    genres, albums_number = zip(*albums_by_primary_genre.items())
+    filtered_albums_by_primary_genre = {}
+
+    for genre in albums_by_primary_genre:
+        if albums_by_primary_genre[genre] > 2:
+            filtered_albums_by_primary_genre[genre] = albums_by_primary_genre[genre]
+
+    if filtered_albums_by_primary_genre:
+        genres, albums_number = zip(*filtered_albums_by_primary_genre.items())
+    else:
+        genres = []
+        albums_number = []
 
     list_genres = list(genres)
     list_albums_number = list(albums_number)
@@ -217,7 +226,6 @@ def get_album_number_by_listened_and_released_year():
 def get_album_by_rating():
 
     rates = [*np.arange(0, 5.5, 0.5)]
-    print(rates)
     rates_count = []
 
     for rate in rates:

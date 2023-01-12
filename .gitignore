@@ -4,4 +4,8 @@ __pycache__/
 .env/
 .env
 mediafiles/
+<<<<<<< HEAD
 test/
+=======
+test/
+>>>>>>> 9fcdb78e6530a098a05c20f06e647d3681dfee0c
