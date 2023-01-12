@@ -1,0 +1,371 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@300&display=swap');
+@import "reset.css";
+
+body {
+
+}
+
+#library {
+    width: 85%;
+    background-color: White;
+    margin: 55px auto;
+}
+
+#statistic {
+    width: 85%;
+    background-color: White;
+    margin: 55px auto;
+}
+
+.nav{
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    background-color: White;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 1px 1px 4px rgb(0 0 0 / 20%);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-evenly;
+    width: 85%;
+    margin: 0 auto;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.nav a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 50px;
+}
+
+#recherche {
+    transition-duration: 800ms;
+    height: 25px;
+    right: 0;
+    margin-left: 5px;
+}
+
+#recherche:focus {
+
+    flex-grow: 1;
+    border-radius: 10px;
+    position: relative;
+}
+
+.bandList ul{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+
+}
+
+.bandList li {
+    list-style: none;
+
+}
+
+.img-band {
+    width: 250px;
+    height: 250px;
+    margin: 10px 27px;
+}
+
+.img-band p {
+    width: 250px;
+    height: 250px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 2rem;
+    font-family: 'Abril Fatface';
+    line-height: 250px;
+    border: solid 2px black;
+    border-radius: 100%;
+}
+
+.name {
+    width: 310px;
+
+}
+
+.img-band img{
+    border-radius: 100%;
+    width : 250px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: space-between;
+}
+
+#listeGroupe a {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    text-align: center;
+
+}
+
+a:link, a:visited {
+    text-decoration: none;
+    color:#333;
+    font-family: 'Abril Fatface';
+    letter-spacing: 1px;
+}
+
+.btn{
+    padding: .2rem;
+    width: 50%;
+    border: none;
+    font-weight: 600;
+    font-size: 1.25rem;
+    border-radius: .3rem;
+    color: white;
+    cursor: pointer;
+    font-family: 'Mukta';
+}
+
+.btn-submit {
+    background-color: steelblue;
+
+
+}
+
+.btn-edit {
+    background-color: gold;
+
+}
+
+.btn-delete{
+    background-color: indianred;
+
+}
+
+.delete-row{
+    width: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 20%;
+    color: white;
+    cursor: pointer;
+}
+
+#library-content {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-areas: "img bio"
+                         "img list";
+
+    grid-gap: 30px;
+}
+
+.library-img {
+    grid-area: img;
+}
+
+.library-img img{
+    width: 400px;
+    height: 400px;
+    border-radius: 30px;
+}
+
+.library-img form {
+    margin-top: 1rem;
+}
+
+.bio {
+    grid-area: bio;
+    height: 400px;
+    font-family: 'Mukta';
+    letter-spacing: 1px;
+}
+
+.bio-info {
+    display: flex;
+    height: 325px;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.bio p {
+    font-size: 20px;
+    margin-top: 1.5rem;
+}
+
+.bio h1 {
+    font-size: 50px;
+}
+
+.form input{
+    display: block;
+    margin-bottom: 10px;
+    padding: .5rem;
+    line-height: 1.5;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    width: 100%;
+}
+
+.form select{
+    padding: .5rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    width: 100%;
+}
+
+.form label{
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: block;
+    box-sizing: border-box;
+}
+
+.formTracks{
+
+    font-family: 'Mukta';
+    font-size: 20px;
+}
+
+#formTrackRow {
+    margin-top:20px;
+    margin-bottom: 30px;
+}
+
+#formTrack p{
+    display: inline-block;
+    font-family: 'Mukta';
+    font-size: 20px;
+}
+
+.hidden {
+    display : none;
+}
+
+.tableContainer {
+    grid-area: list;
+    font-family: 'Mukta';
+    font-size: 20px;
+}
+
+.tableContainer h1 {
+    font-size: 50px;
+    letter-spacing: 1px;
+}
+
+.tableContainer img {
+    border-radius: 10px;
+}
+
+.tableContainer table{
+    margin-top: 15px;
+    width:100%;
+
+}
+
+.tableContainer tr:nth-child(even){
+    background-color: GhostWhite;
+}
+
+.tableContainer td, th{
+    vertical-align: middle;
+    text-align: center;
+
+    padding-top:10px;
+    padding-bottom: 10px;
+}
+
+.formContainer {
+    margin: 0 auto;
+    width: 50%;
+    font-family: 'Mukta';
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.formContainer h1{
+    font-size: 50px;
+}
+
+.formContainer form{
+    width: 100%;
+}
+
+.checked {
+    color: orange;
+}
+
+.fa-star-half-full {
+    color: orange;
+}
+
+.fa-calendar-check-o, .fa-heart{
+    color: indianred;
+}
+
+.fa-arrow-circle-up{
+    color: gold;
+}
+
+.lastTR {
+    font-weight: bold;
+}
+
+
+#id_genre_primary {
+    height: 250px;
+}
+
+#id_genre_secondary {
+    height: 250px;
+}
+
+.chartSelector {
+    width: 33%;
+    margin: 0 auto;
+    font-family: 'Mukta';
+    font-size: 20px;
+    text-align: center;
+}
+
+#statistic-content {
+    display: grid;
+    grid-template-columns: .6fr 3fr;
+    grid-template-areas: "sidebar chart"
+                         "sidebar find";
+    grid-gap: 10px;
+}
+
+.collapse {
+    grid-area: sidebar;
+    background-color: GhostWhite;
+    border: solid 1px grey;
+}
+
+.collapse ul {
+    padding: 10px;
+}
+
+.collapse li {
+    font-size: 15px;
+}
+
+.chart {
+    grid-area: chart;
+    height: 500px;
+    text-align: center;
+    font-family: 'Mukta';
+    font-size: 20px;
+}
+
+.filters {
+    grid-area: find;
+}
