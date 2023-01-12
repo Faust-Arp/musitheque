@@ -109,7 +109,6 @@ class AlbumByGenresView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         family = self.kwargs.get('family')
-        print(family)
         context['family'] = family
 
         genres_family, albums_genre = api.get_album_by_family_genres(family)
