@@ -62,8 +62,9 @@
                             <th onclick="sortTable(1)">Groupe</th>
                             <th onclick="sortTable(2)">Sortie</th>
                             <th onclick="sortTable(3)">Écouté</th>
-                            <th onclick="sortTable(4)">Note</th>
-                            <th onclick="sortTable(5)">Voix</th>
+                            <th onclick="sortTable(4)">Genres principaux</th>
+                            <th onclick="sortTable(5)">Note</th>
+                            <th onclick="sortTable(6)">Voix</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,6 +74,7 @@
                                 <td>{{ album.groupe.name }}</td>
                                 <td>{{ album.date_released|date:'Y' }}</td>
                                 <td>{{ album.date_listened|date:'Y' }}</td>
+                                <td>{{ album.genre_primary.all|join:", " }}</td>
                                 <td>{{ album.rating }}</td>
                                 <td>{{ album.get_type_vocal_display }}</td>
                             </tr>
