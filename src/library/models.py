@@ -53,7 +53,9 @@ class Album(models.Model):
 
     ALBUM_TYPE_CHOICES = [
         ("LP", "LP"),
-        ("EP", "EP")]
+        ("EP", "EP"),
+        ("LI", "Live")
+    ]
 
     VOICE_STYLE_CHOICES = [
         ("HA", "Harsh"),

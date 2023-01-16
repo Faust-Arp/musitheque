@@ -35,23 +35,66 @@
             </div>
         </div>
         <div class="tableContainer">
-            <h1>Discographie</h1>
-
+            <h1>Albums</h1>
             <table>
                 <tbody>
                     {% for album in albums %}
-                        <tr>
-                            <td><img src="{{ album.thumbnail.url }}" alt="{{album.slug}}" width="75" height="75"></td>
-                            <td><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a></td>
-                            <td>{{album.date_released|date:'Y'}}</td>
-                            <td>
-                                {% if album.rating %}
-                                    {{ album.rating }}/5
-                                {% else %}
-                                    Non Noté
-                                {% endif %}
-                            </td>
-                        </tr>
+                        {% if album.type_album == "LP" %}
+                            <tr>
+                                <td><img src="{{ album.thumbnail.url }}" alt="{{album.slug}}" width="75" height="75"></td>
+                                <td><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a></td>
+                                <td>{{album.date_released|date:'Y'}}</td>
+                                <td>
+                                    {% if album.rating %}
+                                        {{ album.rating }}/5
+                                    {% else %}
+                                        Non Noté
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h1>EPs</h1>
+            <table>
+                <tbody>
+                    {% for album in albums %}
+                        {% if album.type_album == "EP" %}
+                            <tr>
+                                <td><img src="{{ album.thumbnail.url }}" alt="{{album.slug}}" width="75" height="75"></td>
+                                <td><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a></td>
+                                <td>{{album.date_released|date:'Y'}}</td>
+                                <td>
+                                    {% if album.rating %}
+                                        {{ album.rating }}/5
+                                    {% else %}
+                                        Non Noté
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h1>Lives</h1>
+            <table>
+                <tbody>
+                    {% for album in albums %}
+                        {% if album.type_album == "Live" %}
+                            <tr>
+                                <td><img src="{{ album.thumbnail.url }}" alt="{{album.slug}}" width="75" height="75"></td>
+                                <td><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a></td>
+                                <td>{{album.date_released|date:'Y'}}</td>
+                                <td>
+                                    {% if album.rating %}
+                                        {{ album.rating }}/5
+                                    {% else %}
+                                        Non Noté
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
