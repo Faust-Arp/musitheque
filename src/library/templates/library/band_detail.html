@@ -81,7 +81,7 @@
             <table>
                 <tbody>
                     {% for album in albums %}
-                        {% if album.type_album == "Live" %}
+                        {% if album.type_album == "LI" %}
                             <tr>
                                 <td><img src="{{ album.thumbnail.url }}" alt="{{album.slug}}" width="75" height="75"></td>
                                 <td><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a></td>

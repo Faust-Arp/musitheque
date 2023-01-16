@@ -1,14 +1,14 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, FormView
 from django.contrib.admin.widgets import AdminDateWidget
 from django.views.generic.detail import SingleObjectMixin
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 import api
-from library.forms import TracksCreateForm, TracksCreateFormSet, AlbumCreateForm
+from library.forms import TracksCreateFormSet, AlbumCreateForm
 from library.models import Band, Album, Track, Playlist
 
 
@@ -135,6 +135,22 @@ class AlbumCreate(UserPassesTestMixin, CreateView):
 
     def test_func(self):
         return self.request.user.is_admin
+
+    def form_valid(self, form):
+        title = form.cleaned_data.get('title')
+        groupe = form.cleaned_data.get('groupe')
+        released = form.cleaned_data.get('date_released')
+        listened = form.cleaned_data.get('date_listened')
+
+        if Album.objects.filter(title=title, groupe=groupe).exists():
+            form.add_error(None, "L'album existe déjà")
+            return self.form_invalid(form)
+        elif released > listened :
+            form.add_error(None, "Vous ne pouvez pas avoir écouté un album avant sa sortie")
+            return self.form_invalid(form)
+        else:
+            form.save()
+            return redirect(self.get_success_url())
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
