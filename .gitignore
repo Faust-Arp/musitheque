@@ -1,5 +1,4 @@
 .idea/
-db.sqlite3
 __pycache__/
 .env/
 .env
@@ -9,3 +8,4 @@ test/
 =======
 test/
 >>>>>>> 9fcdb78e6530a098a05c20f06e647d3681dfee0c
+db.sqlite3
