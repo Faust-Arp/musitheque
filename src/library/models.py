@@ -70,7 +70,7 @@ class Album(models.Model):
     ]
 
     title = models.CharField(max_length=50, verbose_name="titre")
-    slug = models.SlugField(max_length=50, unique=True, blank=True)
+    slug = models.SlugField(max_length=50, blank=True)
     groupe = models.ForeignKey("Band", on_delete=models.CASCADE)
     date_released = models.DateField(blank=True, null=True, verbose_name="Date de sortie")
     date_listened = models.DateField(blank=True, null=True, verbose_name="Date d'écoute")
