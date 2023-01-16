@@ -9,28 +9,53 @@
 
 {% block content %}
 
-    <div class="bandList">
-        <ul id="listeGroupe">
-            <li id="albumCount">
+<div class="bandList">
+    <ul id="listeGroupe">
+        <li id="albumCount">
+            <div class="img-band">
+                <p>{{ albums.count }} albums</p>
+            </div>
+            <div class="name name-centered">
+                <a href="{% url 'statistic:album-by-years' %}">Stats des albums</a>
+            </div>
+        </li>
+
+        {% for album in albums %}
+            <li id="{{ album.slug }}">
                 <div class="img-band">
-                    <p>{{ albums.count }} albums</p>
+                    <img src="{{ album.thumbnail.url}}" alt="{{album.slug}}">
                 </div>
                 <div class="name name-centered">
-                    <a href="{% url 'statistic:album-by-years' %}">Stats des albums</a>
+                    <a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a>
                 </div>
             </li>
+        {% endfor %}
+    </ul>
+</div>
+<script>
+    var list = document.querySelector("#listeGroupe");
+    var items = list.children;
+    var loading = false;
+    var index = 20;
 
-            {% for album in albums %}
-                <li id="{{ album.slug }}">
-                    <div class="img-band">
-                        <img src="{{ album.thumbnail.url}}" alt="{{album.slug}}">
-                    </div>
-                    <div class="name name-centered">
-                        <a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+    for (var i = 20; i < items.length; i++) {
+      items[i].style.display = "none";
+    }
 
+    window.addEventListener("scroll", function() {
+      if (loading) return;
+      if (document.body.clientHeight - window.innerHeight - window.scrollY < 20) {
+        loading = true;
+        for (var i = index; i < index + 20; i++) {
+          if (i < items.length) {
+            items[i].style.display = "block";
+          } else {
+            break;
+          }
+        }
+        index += 20;
+        loading = false;
+      }
+    });
+</script>
 {% endblock %}
