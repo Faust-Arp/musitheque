@@ -39,11 +39,14 @@ class AlbumCreateForm(forms.ModelForm):
         cleaned_data = super().clean()
         title = cleaned_data.get('title')
         groupe = cleaned_data.get('groupe')
+        released = cleaned_data.get('date_released')
+        listened = cleaned_data.get('date_listened')
 
         if Album.objects.filter(title=title, groupe=groupe).exists():
             raise forms.ValidationError("L'album existe déjà")
 
-
+        if released > listened:
+            raise forms.ValidationError("Vous ne pouvez pas avoir écouté un album avant sa sortie !")
 
 
 class TracksCreateForm(forms.ModelForm):
