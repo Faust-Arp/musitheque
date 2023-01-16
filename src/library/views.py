@@ -136,6 +136,9 @@ class AlbumCreate(UserPassesTestMixin, CreateView):
     def test_func(self):
         return self.request.user.is_admin
 
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
 
 class AlbumEdit(UserPassesTestMixin, UpdateView):
     model = Album
