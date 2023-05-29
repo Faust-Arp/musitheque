@@ -1,0 +1,62 @@
+{% extends 'base_statistic.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Statistiques</title>
+{% endblock %}
+
+{% block content %}
+    <div id="albumByYear" class="chart">
+        <canvas id="canvasByYear" width="400px" height="400px"></canvas>
+        <script>
+        const ctx = document.getElementById('canvasByYear').getContext('2d');
+        const chartYear = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels:  {{ years|safe }},
+                datasets: [{
+                    label: 'Albums par années',
+                    data: {{albums_year}},
+                    backgroundColor: [
+                        '#FFA3DA',
+                        '#C095E8',
+                        '#AFBDFF',
+                        '#95DBE8',
+                        '#BDFFDB',
+                        '#A8DDE3',
+                        '#949DE3',
+                    ],
+                    borderColor: [
+                        '#FF30C6',
+                        '#812CE8',
+                        '#3C6AFF',
+                        '#2CD6E8',
+                        '#4AFF8F',
+                        '#4FD5E3',
+                        '#4253E3',
+                    ],
+                    borderWidth: 1,
+                    barPercentage: .3,
+                    categoryPercentage: .8
+                }]
+            },
+            options: {
+                onClick: function(e){
+                    const points = chartYear.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+                    if (points.length) {
+                        const firstPoint = points[0];
+                        const label = chartYear.data.labels[firstPoint.index];
+                        window.location.href = 'http://127.0.0.1:8000/statistic/albums?date_released=' + label;
+                    }
+                },
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        </script>
+    </div>
+{% endblock %}
