@@ -1,0 +1,10 @@
+/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/environ/environ.py:648: UserWarning: Error reading /app/src/musitheque/.env - if you're not configuring your environment separately, check this.
+  warnings.warn(
+/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/environ/environ.py:648: UserWarning: Error reading /app/src/musitheque/.env - if you're not configuring your environment separately, check this.
+  warnings.warn(
+Watching for file changes with StatReloader
+[15/Jan/2026 10:11:16] "GET /library/bands HTTP/1.1" 200 2079
+[15/Jan/2026 10:11:16] "GET /static/javascript/multiselect-dropdown.js HTTP/1.1" 200 7717
+[15/Jan/2026 10:11:16] "GET /static/javascript/script.js HTTP/1.1" 200 7487
+[15/Jan/2026 10:11:16] "GET /static/css/style.css HTTP/1.1" 200 8446
+[15/Jan/2026 10:11:16] "GET /static/css/reset.css HTTP/1.1" 200 1620
