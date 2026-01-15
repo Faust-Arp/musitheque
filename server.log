@@ -3,8 +3,55 @@
 /home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/environ/environ.py:648: UserWarning: Error reading /app/src/musitheque/.env - if you're not configuring your environment separately, check this.
   warnings.warn(
 Watching for file changes with StatReloader
-[15/Jan/2026 10:11:16] "GET /library/bands HTTP/1.1" 200 2079
-[15/Jan/2026 10:11:16] "GET /static/javascript/multiselect-dropdown.js HTTP/1.1" 200 7717
-[15/Jan/2026 10:11:16] "GET /static/javascript/script.js HTTP/1.1" 200 7487
-[15/Jan/2026 10:11:16] "GET /static/css/style.css HTTP/1.1" 200 8446
-[15/Jan/2026 10:11:16] "GET /static/css/reset.css HTTP/1.1" 200 1620
+Error: That port is already in use.
+[15/Jan/2026 14:47:29] "GET /library/albums HTTP/1.1" 200 2451
+[15/Jan/2026 14:47:29] "GET /static/css/style.css HTTP/1.1" 200 8446
+[15/Jan/2026 14:47:29] "GET /static/javascript/script.js HTTP/1.1" 200 7487
+[15/Jan/2026 14:47:29] "GET /static/javascript/multiselect-dropdown.js HTTP/1.1" 200 7717
+[15/Jan/2026 14:47:29] "GET /static/css/reset.css HTTP/1.1" 200 1620
+Internal Server Error: /library/create-band
+Traceback (most recent call last):
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/django/contrib/auth/mixins.py", line 132, in dispatch
+    user_test_result = self.get_test_func()()
+                       ^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/library/views.py", line 49, in test_func
+    return self.request.user.is_admin
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/django/utils/functional.py", line 268, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'is_admin'
+[15/Jan/2026 14:48:05] "GET /library/create-band HTTP/1.1" 500 74690
+Not Found: /account/login/
+[15/Jan/2026 14:57:23] "GET /account/login/ HTTP/1.1" 404 2703
+[15/Jan/2026 15:03:50] "GET /compte/login/ HTTP/1.1" 200 753
+[15/Jan/2026 15:03:51] "POST /compte/login/ HTTP/1.1" 302 0
+[15/Jan/2026 15:03:51] "GET /library/bands HTTP/1.1" 200 2079
+[15/Jan/2026 15:03:51] "GET /static/css/style.css HTTP/1.1" 200 8446
+[15/Jan/2026 15:03:51] "GET /static/javascript/script.js HTTP/1.1" 200 7487
+[15/Jan/2026 15:03:51] "GET /static/javascript/multiselect-dropdown.js HTTP/1.1" 200 7717
+[15/Jan/2026 15:03:51] "GET /library/create-band HTTP/1.1" 200 2494
+[15/Jan/2026 15:03:51] "GET /static/css/reset.css HTTP/1.1" 200 1620
+[15/Jan/2026 15:03:51] "GET /static/css/reset.css HTTP/1.1" 200 1620
+Not Found: /library/band/1/create-album
+[15/Jan/2026 15:03:51] "GET /library/band/1/create-album HTTP/1.1" 404 3646
+[15/Jan/2026 15:04:53] "GET /compte/login/ HTTP/1.1" 200 753
+[15/Jan/2026 15:04:54] "POST /compte/login/ HTTP/1.1" 302 0
+[15/Jan/2026 15:04:54] "GET /library/bands HTTP/1.1" 200 2079
+[15/Jan/2026 15:04:54] "GET /static/css/style.css HTTP/1.1" 200 8446
+[15/Jan/2026 15:04:54] "GET /static/javascript/script.js HTTP/1.1" 200 7487
+[15/Jan/2026 15:04:54] "GET /static/javascript/multiselect-dropdown.js HTTP/1.1" 200 7717
+[15/Jan/2026 15:04:54] "GET /library/create-band HTTP/1.1" 200 2494
+[15/Jan/2026 15:04:54] "GET /static/css/style.css HTTP/1.1" 200 8446
+[15/Jan/2026 15:04:54] "GET /static/css/reset.css HTTP/1.1" 200 1620
+Not Found: /library/band/1/create-album
+[15/Jan/2026 15:04:54] "GET /library/band/1/create-album HTTP/1.1" 404 3646
