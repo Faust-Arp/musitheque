@@ -1,61 +1,82 @@
 {% extends 'base_library.html' %}
 
 {% block title %}
-    <title>Accueil de la musithèque</title>
+
+    <title>Albums</title>
 {% endblock %}
 
-{% block nav %}<input type="text" id="recherche" placeholder="Rechercher" onkeyup="search()">{% endblock %}
+{% block nav %}
+    <form action="{% url 'library:search' %}" method="POST" enctype="multipart/form-data" class="form-search">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="{{submit_button_value}}" class="btn btn-submit validate" style="display: None;">
+   </form>
+{% endblock %}
 
 
 {% block content %}
 
-<div class="bandList">
-    <ul id="listeGroupe">
-        <li id="albumCount">
-            <div class="img-band">
-                <p>{{ albums.count }} albums</p>
-            </div>
-            <div class="name name-centered">
-                <a href="{% url 'statistic:album-by-years' %}">Stats des albums</a>
-            </div>
-        </li>
-
-        {% for album in albums %}
-            <li id="{{ album.slug }}">
-                <div class="img-band">
-                    <img src="{{ album.thumbnail.url}}" alt="{{album.slug}}">
-                </div>
-                <div class="name name-centered">
-                    <a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-<script>
-    var list = document.querySelector("#listeGroupe");
-    var items = list.children;
-    var loading = false;
-    var index = 20;
-
-    for (var i = 20; i < items.length; i++) {
-      items[i].style.display = "none";
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #1a1a1a;
+        color: #f0f0f0;
+        margin: 0;
+        padding: 0;
     }
 
-    window.addEventListener("scroll", function() {
-      if (loading) return;
-      if (document.body.clientHeight - window.innerHeight - window.scrollY < 20) {
-        loading = true;
-        for (var i = index; i < index + 20; i++) {
-          if (i < items.length) {
-            items[i].style.display = "block";
-          } else {
-            break;
-          }
-        }
-        index += 20;
-        loading = false;
-      }
-    });
-</script>
+    /* Section des albums */
+    .lastItems {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 0 20px;
+        margin-top: 20px;
+    }
+
+</style>
+
+<div class="factsList">
+    <div class="fact">
+        <p>{{albums.count}} albums</p>
+    </div>
+    <div class="fact">
+        <p>{{listened_current_month}} écoutés</p>
+        <a href="{% url 'statistic:album-by-years' %}">Stats des albums</a>
+    </div>
+    <div class="fact">
+        <p>{{rated_count}} notés</p>
+        <p>{{unrated_count}} non notés</p>
+    </div>
+</div>
+<h1 class="lastItemsTitles">Derniers albums ajoutés</h1>
+<div class="lastItems">
+    {% for last in last_added %}
+        <div class="lastItem">
+            <a href="{% url 'library:album' pk=last.pk %}"><img src="{{last.thumbnail.url}}" alt="{{last.title}}"></a>
+            <p>{{ last.title }} <br> {{ last.date_added|date:'d F Y' }}</p>
+            <p></p>
+        </div>
+    {% endfor %}
+</div>
+<h1 class="lastItemsTitles">Derniers albums Notés</h1>
+<div class="lastItems">
+    {% for last in last_rated %}
+        <div class="lastItem">
+            <a href="{% url 'library:album' pk=last.pk %}"><img src="{{last.thumbnail.url}}" alt="{{last.title}}"></a>
+            <p>{{ last.title }} <br> {{ last.date_rated|date:'d F Y' }}</p>
+            <p></p>
+        </div>
+    {% endfor %}
+</div>
+<h1 class="lastItemsTitles">Derniers albums Notés 4.5 étoiles</h1>
+<div class="lastItems">
+    {% for last in five_stars_albums %}
+        <div class="lastItem">
+            <a href="{% url 'library:album' pk=last.pk %}"><img src="{{last.thumbnail.url}}" alt="{{last.title}}"></a>
+            <p>{{ last.title }} <br> {{ last.date_listened|date:'d F Y' }}</p>
+            <p></p>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

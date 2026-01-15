@@ -2,61 +2,52 @@
 
 
 {% block title %}
-    <title>Accueil de la musithèque</title>
+    <title>Artistes</title>
 {% endblock %}
 
-{% block nav %}<input type="text" id="recherche" placeholder="Rechercher" onkeyup="search()">{% endblock %}
+{% block nav %}
+    <form action="{% url 'library:search' %}" method="POST" enctype="multipart/form-data" class="form-search">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="{{submit_button_value}}" class="btn btn-submit validate" style="display: None;">
+   </form>
+{% endblock %}
 
 
 {% block content %}
 
-<div class="bandList">
-    <ul id="listeGroupe">
-        <li id="addBandButton">
-            <div class="img-band">
-                <p>{{ bands.count }} artistes</p>
-            </div>
-            <div class="name name-centered">
-                <a href="{% url 'library:create-band' %}">Ajouter un artiste</a>
-            </div>
-        </li>
-        {% for band in bands %}
-            <li id="{{ band.slug }}">
-                <div class="img-band">
-                    <img src="{{ band.thumbnail.url}}" alt="{{band.slug}}">
-                </div>
-                <div class="name name-centered">
-                    <a href="{% url 'library:band' pk=band.pk %}">{{ band.name }}</a>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-<script>
-    var list = document.querySelector("#listeGroupe");
-    var items = list.children;
-    var loading = false;
-    var index = 20;
-
-    for (var i = 20; i < items.length; i++) {
-      items[i].style.display = "none";
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #1a1a1a;
+        color: #f0f0f0;
+        margin: 0;
+        padding: 0;
     }
 
-    window.addEventListener("scroll", function() {
-      if (loading) return;
-      if (document.body.clientHeight - window.innerHeight - window.scrollY < 20) {
-        loading = true;
-        for (var i = index; i < index + 20; i++) {
-          if (i < items.length) {
-            items[i].style.display = "block";
-          } else {
-            break;
-          }
-        }
-        index += 20;
-        loading = false;
-      }
-    });
-</script>
+    .lastItems {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 0 20px;
+        margin-top: 20px;
+    }
+</style>
 
+<div class="factsList">
+    <div class="fact">
+        <p>{{ bands.count }} artistes</p>
+        <a href="{% url 'library:create-band' %}">Ajouter un artiste</a>
+    </div>
+</div>
+<h1 class="lastItemsTitles">Derniers artistes ajoutés</h1>
+<div class="lastItems">
+    {% for last in last_added %}
+        <div class="lastItem">
+            <a href="{% url 'library:band' pk=last.pk %}"><img src="{{last.thumbnail.url}}" alt="{{last.name}}"></a>
+            <p>{{ last.name }} - {{ last.date_added|date:'d F Y' }}</p>
+            <p></p>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

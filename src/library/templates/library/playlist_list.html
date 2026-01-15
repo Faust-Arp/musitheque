@@ -2,36 +2,40 @@
 
 
 {% block title %}
-    <title>Accueil de la musithèque</title>
+    <title>Playlists</title>
 {% endblock %}
 
 {% block nav %}<input type="text" id="recherche" placeholder="Rechercher" onkeyup="search()">{% endblock %}
 
 
 {% block content %}
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
 
-    <div class="bandList">
-        <ul id="listeGroupe">
-            <li id="addPlaylistButton">
-                <div class="img-band">
-                    <img src="https://picsum.photos/250/250" alt="Random Image">
-                </div>
-                <div class="name name-centered">
-                    <a href="{% url 'library:create-band' %}">Ajouter une playlist</a>
-                </div>
-            </li>
-
-            {% for playlist in playlists %}
-                <li id="{{ playlist.slug }}">
-                    <div class="img-band">
-                        <img src="https://picsum.photos/250/250" alt="Random Image">
-                    </div>
-                    <div class="name name-centered">
-                        <a href="{% url 'library:playlist' pk=playlist.pk %}">{{ playlist.name }}</a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
+        .lastItems {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+            margin-top: 20px;
+        }
+    </style>
+    <div class="lastItems">
+        {% for playlist in playlists %}
+            <div class="lastItem">
+                {% if playlist.thumbnail %}
+                <a href="{% url 'library:playlist' pk=playlist.pk %}"><img src="{{playlist.thumbnail.url}}" alt="{{playlist.name}}"></a>
+                <p>{{playlist.name}}</p>
+                {% else %}
+                <a href="{% url 'library:playlist' pk=playlist.pk %}">{{playlist.name}}</a>
+                {% endif %}
+            </div>
+        {% endfor %}
     </div>
-
 {% endblock %}

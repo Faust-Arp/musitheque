@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base_library.html' %}
+
+
+{% block title %}
+    <title>Résultats</title>
+{% endblock %}
+
+
+{% block content %}
+    {% if bands %}
+        <h1>Artistes</h1>
+            {% for band in bands%}
+                <a href="{% url 'library:band' pk=band.pk %}">{{ band.name }}</a><br>
+            {% endfor %}
+    {% endif %}
+    {% if albums %}
+        <h1>Albums</h1>
+            {% for album in albums%}
+                <a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a><br>
+            {% endfor %}
+    {% endif %}
+{% endblock %}

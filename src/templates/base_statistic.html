@@ -20,7 +20,7 @@
             <a href="{% url 'library:bands-list' %}">Artistes</a>
             <a href="{% url 'library:albums-list' %}">Albums</a>
             <a href="{% url 'library:playlists-list' %}">Playlists</a>
-            <a href="{% url 'statistic:band-by-country' %}">Statistiques</a>
+            <a href="{% url 'statistic:album-by-years' %}">Statistiques</a>
             {% block nav %}{% endblock %}
         </div>
     </nav>
@@ -29,35 +29,19 @@
         <div id="statistic-content">
         <nav class="collapse">
             <ul>
-                <li>Artistes
+                <li><a href="{% url 'statistic:bands-stats' %}">Artistes</a>
                     <ul>
                         <li><a href="{% url 'statistic:band-by-country' %}">Par pays</a></li>
                     </ul>
                 </li>
-                <li>Albums
+                <li><a href="{% url 'statistic:albums-stats' %}">Albums</a>
                     <ul>
                         <li><a href="{% url 'statistic:album-by-years' %}">Par années</a></li>
-                        <li><a href="{% url 'statistic:album-by-rating' %}">Par notes</a></li>
                         <li><a href="{% url 'statistic:album-by-decades' %}">Par décénies</a></li>
+                        <li><a href="{% url 'statistic:album-by-rating' %}">Par notes</a></li>
+                        <li><a href="{% url 'statistic:album-by-average' %}">Par moyennes</a></li>
+                        <li><a href="{% url 'statistic:album-by-ownership' %}">Par possession</a></li>
                         <li><a href="{% url 'statistic:album-by-families' %}">Par famille</a></li>
-                        <li>Par genre
-                            <ul>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Ambient'%}">D'Ambient'</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Country'%}">De Country</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Dance'%}">De Dance</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Electronic'%}">D'Electro</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Folk'%}">De Folk</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Hip Hop'%}">De Hip Hop</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Jazz'%}">De Jazz</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Metal'%}">De Métal</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Regional'%}">De Musique Régionale</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Pop'%}">De Pop</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Punk'%}">De Punk</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Psychedelia'%}">De Psychedelia</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='R&B'%}">De R&B</a></li>
-                                <li><a href="{% url 'statistic:album-by-genres' family='Rock'%}">De Rock</a></li>
-                            </ul>
-                        </li>
                         <li><a href="{% url 'statistic:listened-released' %}">Par écoute</a></li>
                     </ul>
                 </li>

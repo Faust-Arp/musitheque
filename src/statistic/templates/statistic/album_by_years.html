@@ -41,53 +41,31 @@
                 }]
             },
             options: {
+                onClick: function(e){
+                    const points = chartYear.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+                    if (points.length) {
+                        const firstPoint = points[0];
+                        const label = chartYear.data.labels[firstPoint.index];
+                        window.location.href = 'http://127.0.0.1:8000/statistic/albums?date_released=' + label;
+                    }
+                },
                 maintainAspectRatio: false,
                 scales: {
-                    y: {
-                        beginAtZero: true
+                    x: {  // <-- axis is not array anymore, unlike before in v2.x: '[{'
+                      grid: {
+                        color: 'white',
+                        borderColor: 'white'  // <-- this line is answer to initial question
+                      }
+                    },
+                    y: {  // <-- axis is not array anymore, unlike before in v2.x: '[{'
+                      grid: {
+                        color: 'white',
+                        borderColor: 'white'  // <-- this line is answer to initial question
+                      }
                     }
                 }
             }
         });
         </script>
     </div>
-
-    <div class="filters">
-        <form method="GET" enctype="multipart/form-data" action="{%url 'statistic:album-by-years'%}" class="form form-create">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Chercher" class="btn btn-submit">
-        </form>
-
-        <h1>Liste des albums</h1>
-        <div class="tableContainer">
-            <table id="displayDetails">
-                    <thead>
-                        <tr>
-                            <th onclick="sortTable(0)">Titre</th>
-                            <th onclick="sortTable(1)">Groupe</th>
-                            <th onclick="sortTable(2)">Sortie</th>
-                            <th onclick="sortTable(3)">Écouté</th>
-                            <th onclick="sortTable(4)">Genres principaux</th>
-                            <th onclick="sortTable(5)">Note</th>
-                            <th onclick="sortTable(6)">Voix</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for album in albums %}
-                            <tr>
-                                <td>{{ album.title }}</td>
-                                <td>{{ album.groupe.name }}</td>
-                                <td>{{ album.date_released|date:'Y' }}</td>
-                                <td>{{ album.date_listened|date:'Y' }}</td>
-                                <td>{{ album.genre_primary.all|join:", " }}</td>
-                                <td>{{ album.rating }}</td>
-                                <td>{{ album.get_type_vocal_display }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-    </div>
-
 {% endblock %}

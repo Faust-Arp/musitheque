@@ -27,7 +27,7 @@ style.innerHTML = `
 .multiselect-dropdown span.optext .optdel {
   float: right;
   margin: 0 -6px 1px 5px;
-  font-size: 0.7em;
+  font-size: 0.3em;
   margin-top: 2px;
   cursor: pointer;
   color: #666;

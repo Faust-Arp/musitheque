@@ -23,7 +23,7 @@
                 <p>Pays - {{ band.country }}</p>
                 <p>Région - {{ band.region }}</p>
                 <p>Ville - {{ band.city }}</p>
-                <p>Ajouté le : {{ band.date_added }}</p>
+                <p>Ajouté le : {{ band.date_added|date:'d F Y' }}</p>
                 <p>
                     {% if band.active %}
                         Actif
@@ -31,15 +31,14 @@
                         Inactif
                     {% endif %}
                 </p>
-                <p>Nombre d'album(s) possédé(s): {{ album_owned }}/{{ album_count }}</p>
             </div>
         </div>
         <div class="tableContainer">
-            <h1>Albums</h1>
-            <table>
-                <tbody>
-                    {% for album in albums %}
-                        {% if album.type_album == "LP" %}
+            {% if albums %}
+                <h1>Albums</h1>
+                <table class="tableContainerDetails">
+                    <tbody>
+                        {% for album in albums %}
                             <tr>
                                 <td><img src="{{ album.thumbnail.url }}" alt="{{album.slug}}" width="75" height="75"></td>
                                 <td><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a></td>
@@ -52,52 +51,94 @@
                                     {% endif %}
                                 </td>
                             </tr>
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
-            <h1>EPs</h1>
-            <table>
-                <tbody>
-                    {% for album in albums %}
-                        {% if album.type_album == "EP" %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            {% if eps %}
+                <h1>EP</h1>
+                <table class="tableContainerDetails">
+                    <tbody>
+                        {% for ep in eps %}
                             <tr>
-                                <td><img src="{{ album.thumbnail.url }}" alt="{{album.slug}}" width="75" height="75"></td>
-                                <td><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a></td>
-                                <td>{{album.date_released|date:'Y'}}</td>
+                                <td><img src="{{ ep.thumbnail.url }}" alt="{{ep.slug}}" width="75" height="75"></td>
+                                <td><a href="{% url 'library:album' pk=ep.pk %}">{{ ep.title }}</a></td>
+                                <td>{{ep.date_released|date:'Y'}}</td>
                                 <td>
-                                    {% if album.rating %}
-                                        {{ album.rating }}/5
+                                    {% if ep.rating %}
+                                        {{ ep.rating }}/5
                                     {% else %}
                                         Non Noté
                                     {% endif %}
                                 </td>
                             </tr>
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
-            <h1>Lives</h1>
-            <table>
-                <tbody>
-                    {% for album in albums %}
-                        {% if album.type_album == "LI" %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            {% if lives %}
+                <h1>Lives</h1>
+                <table class="tableContainerDetails">
+                    <tbody>
+                        {% for live in lives %}
                             <tr>
-                                <td><img src="{{ album.thumbnail.url }}" alt="{{album.slug}}" width="75" height="75"></td>
-                                <td><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a></td>
-                                <td>{{album.date_released|date:'Y'}}</td>
+                                <td><img src="{{ live.thumbnail.url }}" alt="{{live.slug}}" width="75" height="75"></td>
+                                <td><a href="{% url 'library:album' pk=live.pk %}">{{ live.title }}</a></td>
+                                <td>{{live.date_released|date:'Y'}}</td>
                                 <td>
-                                    {% if album.rating %}
-                                        {{ album.rating }}/5
+                                    {% if live.rating %}
+                                        {{ live.rating }}/5
                                     {% else %}
                                         Non Noté
                                     {% endif %}
                                 </td>
                             </tr>
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            {% if singles %}
+                <h1>Singles</h1>
+                <table class="tableContainerDetails">
+                    <tbody>
+                        {% for single in singles %}
+                            <tr>
+                                <td><img src="{{ single.thumbnail.url }}" alt="{{single.slug}}" width="75" height="75"></td>
+                                <td><a href="{% url 'library:album' pk=single.pk %}">{{ single.title }}</a></td>
+                                <td>{{single.date_released|date:'Y'}}</td>
+                                <td>
+                                    {% if single.rating %}
+                                        {{ single.rating }}/5
+                                    {% else %}
+                                        Non Noté
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            {% if compiles %}
+                <h1>Compilation</h1>
+                <table class="tableContainerDetails">
+                    <tbody>
+                        {% for compile in compiles %}
+                            <tr>
+                                <td><img src="{{ compile.thumbnail.url }}" alt="{{compile.slug}}" width="75" height="75"></td>
+                                <td><a href="{% url 'library:album' pk=compile.pk %}">{{ compile.title }}</a></td>
+                                <td>{{compile.date_released|date:'Y'}}</td>
+                                <td>
+                                    {% if compile.rating %}
+                                        {{ compile.rating }}/5
+                                    {% else %}
+                                        Non Noté
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

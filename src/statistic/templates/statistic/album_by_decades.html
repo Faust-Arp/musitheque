@@ -51,43 +51,4 @@
         });
         </script>
     </div>
-
-    <div class="filters">
-        <form method="GET" enctype="multipart/form-data" action="{%url 'statistic:band-by-country'%}" class="form form-create">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Chercher" class="btn btn-submit">
-        </form>
-
-        <h1>Liste des albums</h1>
-        <div class="tableContainer">
-            <table id="displayDetails">
-                    <thead>
-                        <tr>
-                            <th onclick="sortTable(0)">Titre</th>
-                            <th onclick="sortTable(1)">Groupe</th>
-                            <th onclick="sortTable(2)">Sortie</th>
-                            <th onclick="sortTable(3)">Écouté</th>
-                            <th onclick="sortTable(4)">Genres principaux</th>
-                            <th onclick="sortTable(5)">Note</th>
-                            <th onclick="sortTable(6)">Voix</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for album in albums %}
-                            <tr>
-                                <td>{{ album.title }}</td>
-                                <td>{{ album.groupe.name }}</td>
-                                <td>{{ album.date_released|date:'Y' }}</td>
-                                <td>{{ album.date_listened|date:'Y' }}</td>
-                                <td>{{ album.genre_primary.all|join:", " }}</td>
-                                <td>{{ album.rating }}</td>
-                                <td>{{ album.get_type_vocal_display }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-    </div>
-
 {% endblock %}

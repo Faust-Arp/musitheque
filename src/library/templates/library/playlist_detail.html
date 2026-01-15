@@ -2,23 +2,28 @@
 {%load static%}
 {% load library_extras %}
 
-{% block title%} <title>{{ album.title }}</title> {% endblock %}
+{% block title%} <title>{{ playlist.name }}</title> {% endblock %}
 
 {% block content %}
     <div id="library-content">
         <div class="library-img">
+            {% if playlist.thumbnail %}
+                <img src="{{ playlist.thumbnail.url}}" alt="{{album.slug}}">
+            {% else %}
                 <img src="https://picsum.photos/250/250" alt="Random Image">
+            {% endif %}
         </div>
         <div class="bio">
             <h1>{{ playlist.name }}</h1>
             <div class="bio-info">
                 <p>Durée : {{ full_duration }}</p>
                 <p>Nombre de morceaux : {{ number_of_tracks }}</p>
+                <p>Dernière mise à jour : {{ playlist.last_updated }}</p>
             </div>
         </div>
         <div class="tableContainer">
             <h1>Liste des morceaux</h1>
-            <table id="displayDetails">
+            <table id="tableContainerDetails">
                 <thead>
                     <tr>
                         <th onclick="sortTable(0)">#</th>

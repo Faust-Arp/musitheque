@@ -7,9 +7,6 @@
 {% block content %}
 
     <div class="formTracks">
-        <h1>Ajouter des morceaux</h1>
-        <input type="number" id="nbRow" name="Nombre de morceau" min="1" value="1">
-        <button id="addTrackRow" class="addTrackRow" onclick="addRow()">+</button>
 
         <form method="POST" enctype="multipart/form-data" class="formTrack form-create">
             {% for hidden_field in form.hidden_fields %}
@@ -24,7 +21,7 @@
 
             {% for track_form in form.forms %}
 
-                <div id="formTrackRow">
+                <div class="formTrackRow">
                     {% csrf_token %}
                     {{ track_form }}
                 </div>

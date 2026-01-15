@@ -38,7 +38,7 @@ class AlbumAdmin(admin.ModelAdmin):
         "pk",
         "title",
         "date_released",
-        "owned",
+        "date_added",
         "rating",
         "number_album",
     )

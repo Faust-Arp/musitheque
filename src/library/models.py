@@ -10,7 +10,7 @@ class Band(models.Model):
     region = models.CharField(max_length=50)
     city = models.CharField(max_length=50, blank=True)
     active = models.BooleanField(default=True)
-    date_added = models.DateField(auto_now=True)
+    date_added = models.DateField(auto_now_add=True)
     thumbnail = models.ImageField(blank=True, upload_to='bands')
 
     class Meta:
@@ -54,37 +54,34 @@ class Album(models.Model):
     ALBUM_TYPE_CHOICES = [
         ("LP", "LP"),
         ("EP", "EP"),
-        ("LI", "Live")
-    ]
-
-    VOICE_STYLE_CHOICES = [
-        ("HA", "Harsh"),
-        ("CL", "Clean"),
-        ("MX", "Mixed"),
-        ("NO", "Instrumental")
+        ("LI", "Live"),
+        ("SI", "Single"),
+        ("CO", "Compilation")
     ]
 
     TYPE_OWNED_CHOICES = [
-        ("VY", "Vynile"),
-        ("NU", "Numérique"),
-        ("CD", "CD"),
-        ("K7", "K7")
+        ("AC", "Acheté"),
+        ("TL", "Téléchargé"),
     ]
 
-    title = models.CharField(max_length=50, verbose_name="titre")
-    slug = models.SlugField(max_length=50, blank=True)
+    title = models.CharField(max_length=100, verbose_name="titre")
+    slug = models.SlugField(max_length=100, blank=True)
     groupe = models.ForeignKey("Band", on_delete=models.CASCADE)
     date_released = models.DateField(blank=True, null=True, verbose_name="Date de sortie")
     date_listened = models.DateField(blank=True, null=True, verbose_name="Date d'écoute")
-    date_added = models.DateField(auto_now=True, verbose_name="Date d'ajout")
-    type_vocal = models.CharField(max_length=2, choices=VOICE_STYLE_CHOICES, null=True, verbose_name="Voix")
+    date_added = models.DateTimeField(auto_now_add=True, verbose_name="Date d'ajout")
+    date_rated = models.DateTimeField(blank=True, null=True, verbose_name="Date de notation")
+    tracks_number = models.IntegerField(verbose_name="Nombre de morceaux")
     type_album = models.CharField(max_length=2, choices=ALBUM_TYPE_CHOICES, verbose_name="Type")
     type_owned = models.CharField(max_length=2, choices=TYPE_OWNED_CHOICES, verbose_name="Type possédé", blank=True)
     genre_primary = models.ManyToManyField(Genre, related_name="primary_genre", verbose_name="Genre Primaire")
-    genre_secondary = models.ManyToManyField(Genre,related_name="secondary_genre", verbose_name="Genre Secondaire", blank=True)
     number_album = models.PositiveSmallIntegerField(default=1, verbose_name="Nombre d'albums")
-    owned = models.BooleanField(default=False, verbose_name="Possédé")
     rating = models.FloatField(blank=True, null=True, verbose_name="Note")
+    comment = models.TextField(
+        blank=True,
+        verbose_name="Commentaire",
+        help_text="Avis personnel sur l'album"
+    )
     thumbnail = models.ImageField(blank=True, upload_to='albums')
 
     class Meta:
@@ -115,9 +112,11 @@ class Playlist(models.Model):
     type = models.CharField(max_length=2, choices=PLAYLIST_TYPE_CHOICES)
     color = models.CharField(max_length=7, verbose_name="Couleur", blank=True)
     optional = models.BooleanField(default=False, verbose_name="Optionel")
-    date_added = models.DateField(auto_now=True, blank=True, null=True, verbose_name="Ajoutée le")
+    date_added = models.DateField(auto_now=True, blank=True, null=True, verbose_name="Ajoutée")
+    last_updated = models.DateField(blank=True, null=True, verbose_name="Modifiée")
     like = models.IntegerField(default=0, blank=True, null=True)
     fan = models.IntegerField(default=0, blank=True, null=True)
+    thumbnail = models.ImageField(blank=True, upload_to='playlists')
 
     class Meta:
         verbose_name = "Playlist"
@@ -132,11 +131,23 @@ class Playlist(models.Model):
 
         super().save(*args, **kwargs)
 
+    def get_album_thumbnails(self):
+        album_ids = self.playlist.all().values_list('album', flat=True).distinct()[:4]
+        return Album.objects.filter(id__in=album_ids).only('thumbnail')
+
 
 class Track(models.Model):
-    title = models.CharField(max_length=50, verbose_name="Titre")
-    slug = models.SlugField(max_length=50, blank=True)
+
+    TRACK_TYPE_CHOICES = [
+        ("IT", "Interlude"),
+        ("RG", "Régulière")
+    ]
+
+    title = models.CharField(max_length=150, verbose_name="Titre")
+    slug = models.SlugField(max_length=150, blank=True)
+    type = models.CharField(max_length=2, choices=TRACK_TYPE_CHOICES, verbose_name="Type")
     album = models.ForeignKey("Album", on_delete=models.CASCADE)
+    disc = models.IntegerField(verbose_name="CD", default=1)
     playlist = models.ManyToManyField(Playlist, related_name="playlist", blank=True)
     number = models.IntegerField(verbose_name="Numéro")
     featuring_artist = models.CharField(max_length=50, verbose_name="featuring", blank=True, null=True)
@@ -152,7 +163,7 @@ class Track(models.Model):
 
     class Meta:
         verbose_name = "Morceau"
-        ordering = ["number"]
+        ordering = ["disc", "number"]
 
     def __str__(self):
         return self.title

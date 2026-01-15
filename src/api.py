@@ -14,6 +14,27 @@ def get_album_duration(pk):
     return full_duration
 
 
+def get_album_average(pk):
+
+    track_list = Track.objects.filter(album=pk, type="RG")
+    track_number = len(track_list)
+    rates_sum = 0
+
+    if track_list :
+        for track in track_list:
+            if not track.rating:
+                break
+            else:
+                rates_sum += track.rating
+    else:
+        return 0
+
+    average = rates_sum/track_number
+    rounded_average = round(average, 2)
+
+    return rounded_average
+
+
 def get_playlist_duration(pk):
 
     track_list = Track.objects.filter(playlist__id=pk)
@@ -71,7 +92,7 @@ def get_band_count_by_country():
 
 def get_album_by_released_year():
 
-    albums = Album.objects.all().order_by('date_released')
+    albums = Album.objects.filter(date_released__year__gte=1988).order_by('date_released')
     album_by_year = {}
 
     for album in albums:
@@ -87,6 +108,26 @@ def get_album_by_released_year():
     list_albums_number = list(albums_number)
 
     return list_years, list_albums_number
+
+
+def get_rated_album_by_released_year():
+
+    albums = Album.objects.filter(date_released__year__gte=1988, rating__gt=0).order_by('date_released')
+    rated_album_by_year = {}
+
+    for album in albums:
+
+        if album.date_released.year in rated_album_by_year:
+            rated_album_by_year[album.date_released.year] += 1
+        else:
+            rated_album_by_year[album.date_released.year] = 1
+
+    years, albums_number = zip(*rated_album_by_year.items())
+
+    list_years = list(years)
+    list_rated_albums_number = list(albums_number)
+
+    return list_years, list_rated_albums_number
 
 
 def get_album_by_released_decade():
@@ -131,7 +172,10 @@ def get_album_by_primary_genre(albums, family):
     filtered_albums_by_primary_genre = {}
 
     for genre in albums_by_primary_genre:
-        if albums_by_primary_genre[genre] > 2:
+        if len(albums_by_primary_genre) > 10:
+            if albums_by_primary_genre[genre] > 7:
+                filtered_albums_by_primary_genre[genre] = albums_by_primary_genre[genre]
+        else:
             filtered_albums_by_primary_genre[genre] = albums_by_primary_genre[genre]
 
     if filtered_albums_by_primary_genre:
@@ -212,7 +256,7 @@ def get_all_families():
 
 def get_album_number_by_listened_and_released_year():
 
-    years = [*range(2000, 2024, 1)]
+    years = [*range(2000, 2026, 1)]
     listened_count = []
     released_count = []
 
@@ -233,3 +277,45 @@ def get_album_by_rating():
 
     return rates, rates_count
 
+
+def get_album_average_by_year():
+
+    years = [*range(2000, 2026, 1)]
+    averages = []
+
+    for year in years:
+        notes = 0
+        i = 0
+        albums = Album.objects.filter(date_released__year=year, rating__gt=0).order_by('rating')
+
+        for album in albums:
+            if album.rating == 0:
+                break
+            else:
+                notes += album.rating
+                i += 1
+
+        if i > 0:
+            average = notes / i
+            round_average = round(average, 2)
+            averages.append(round_average)
+        else:
+            average = 0
+            averages.append(average)
+
+    return years, averages
+
+
+def get_album_by_ownership():
+
+    albums = Album.objects.all()
+    downloaded_count = 0
+    bought_count = 0
+
+    for album in albums:
+        if album.type_owned == 'AC':
+            bought_count += 1
+        else:
+            downloaded_count += 1
+
+    return bought_count, downloaded_count

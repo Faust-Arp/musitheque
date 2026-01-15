@@ -1,10 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base_statistic.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Moyennes des notes par années</title>
+{% endblock %}
+
+{% block content %}
+    <div id="albumByAverages" class="chart">
+        <canvas id="canvasByAverages" width="400px" height="400px"></canvas>
+        <script>
+        const ctx = document.getElementById('canvasByAverages').getContext('2d');
+        const chartAverages = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels:  {{ years|safe }},
+                datasets: [{
+                    label: 'Moyennes des notes par années',
+                    data: {{averages}},
+                    backgroundColor: [
+                        '#FFA3DA',
+                        '#C095E8',
+                        '#AFBDFF',
+                        '#95DBE8',
+                        '#BDFFDB',
+                        '#A8DDE3',
+                        '#949DE3',
+                    ],
+                    borderColor: [
+                        '#FF30C6',
+                        '#812CE8',
+                        '#3C6AFF',
+                        '#2CD6E8',
+                        '#4AFF8F',
+                        '#4FD5E3',
+                        '#4253E3',
+                    ],
+                    borderWidth: 1,
+                    barPercentage: .3,
+                    categoryPercentage: .8
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    x: {  // <-- axis is not array anymore, unlike before in v2.x: '[{'
+                      grid: {
+                        color: 'white',
+                        borderColor: 'white'  // <-- this line is answer to initial question
+                      }
+                    },
+                    y: {
+                        grid: {
+                        color: 'white',
+                        borderColor: 'white'  // <-- this line is answer to initial question
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        </script>
+    </div>
+{% endblock %}

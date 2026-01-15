@@ -30,11 +30,15 @@ DEBUG = env.bool("DEBUG", False)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
+# Durée de la session en secondes (1 an ici)
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 365  # 31536000 secondes
+
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'django.contrib.admin'
+    ,
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     'account',
     'library',
     'statistic',
+    'player',
     'django_filters',
 ]
 
@@ -112,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'fr-ca'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Montreal'
 
 USE_I18N = True
 

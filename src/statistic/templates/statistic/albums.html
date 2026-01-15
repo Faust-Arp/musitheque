@@ -1,10 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base_statistic.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Filtrer les albums</title>
+{% endblock %}
+
+{% block content %}
+    <div class="filters">
+        <form method="GET" enctype="multipart/form-data" action="{%url 'statistic:albums-stats'%}" class="form form-create">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Chercher" class="btn btn-submit">
+        </form>
+        <h1>Liste des albums : {{ album_count }}</h1>
+        <div class="tableContainer">
+            <table id="displayFilterDetails">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">Titre</th>
+                            <th onclick="sortTable(1)">Groupe</th>
+                            <th onclick="sortTable(2)">Sortie</th>
+                            <th onclick="sortTable(3)">Mois Écouté</th>
+                            <th onclick="sortTable(4)">Année Écouté</th>
+                            <th onclick="sortTable(5)">Genres principaux</th>
+                            <th onclick="sortTable(6)">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for album in albums %}
+                            <tr>
+                                <td><a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a></td>
+                                <td><a href="{% url 'library:band' pk=album.groupe.pk %}">{{ album.groupe.name }}</a></td>
+                                <td>{{ album.date_released|date:'Y' }}</td>
+                                <td>{{ album.date_listened|date:'M' }}</td>
+                                <td>{{ album.date_listened|date:'Y' }}</td>
+                                <td>{{ album.genre_primary.all|join:", " }}</td>
+                                <td>{{ album.rating }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+{% endblock %}

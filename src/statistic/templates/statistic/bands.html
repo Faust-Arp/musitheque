@@ -1,10 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base_statistic.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Filtrer les artistes</title>
+{% endblock %}
+
+{% block content %}
+    <div class="filters">
+        <form method="GET" enctype="multipart/form-data" action="{%url 'statistic:bands-stats'%}" class="form form-create">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Chercher" class="btn btn-submit">
+        </form>
+
+        <h1>Liste des artistes</h1>
+        <div class="tableContainer">
+            <table id="displayDetails">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">Nom</th>
+                            <th onclick="sortTable(1)">Pays</th>
+                            <th onclick="sortTable(2)">Région</th>
+                            <th onclick="sortTable(3)">Ville</th>
+                            <th onclick="sortTable(4)">Actif</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for band in bands %}
+                            <tr>
+                                <td><a href="{% url 'library:band' pk=band.pk %}">{{ band.name }}</a></td>
+                                <td>{{ band.country }}</td>
+                                <td>{{ band.region }}</td>
+                                <td>{{ band.city }}</td>
+                                <td>{{ band.active }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+{% endblock %}
