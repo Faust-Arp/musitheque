@@ -350,11 +350,14 @@ class PlaylistDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         playlist = Playlist.objects.get(pk=self.kwargs.get('pk'))
-        number_of_tracks = Track.objects.filter(playlist__id=playlist.pk).count()
+        tracks = Track.objects.filter(playlist__id=playlist.pk)
+        number_of_tracks = tracks.count()
         full_duration = api.get_playlist_duration(playlist.pk)
-        context['tracks'] = Track.objects.filter(playlist__id=playlist.pk).order_by("title")
+        number_of_albums = tracks.values_list('album', flat=True).distinct().count()
+        context['tracks'] = tracks.order_by("title")
         context['full_duration'] = full_duration
         context['number_of_tracks'] = number_of_tracks
+        context['number_of_albums'] = number_of_albums
         return context
 
 def searchview(request):
