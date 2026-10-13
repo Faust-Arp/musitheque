@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base_statistic.html' %}
+{% load static %}
+
+
+{% block title %}
+    <title>Stats de l'année {{ year }}</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Statistiques de l'année {{ year }}</h1>
+
+    <div class="stats-card">
+        <p>Albums sortis/écoutés : <strong>{{ listened_albums }}</strong></p>
+        <p>Morceaux "Coup de cœur" (5/5) : <strong>{{ five_stars_tracks }}</strong></p>
+    </div>
+{% endblock %}

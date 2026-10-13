@@ -7,14 +7,12 @@ class Band(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50)
     country = models.CharField(max_length=50)
-    region = models.CharField(max_length=50)
-    city = models.CharField(max_length=50, blank=True)
     active = models.BooleanField(default=True)
     date_added = models.DateField(auto_now_add=True)
     thumbnail = models.ImageField(blank=True, upload_to='bands')
 
     class Meta:
-        verbose_name = "Groupe"
+        verbose_name = "Artiste"
         ordering = ["name"]
 
     def __str__(self):
@@ -25,9 +23,6 @@ class Band(models.Model):
             self.slug = slugify(self.name)
 
         super().save(*args, **kwargs)
-
-    # def get_absolute_url(self):
-    #     return reverse('library:bands-list')
 
 
 class Genre(models.Model):
@@ -56,7 +51,8 @@ class Album(models.Model):
         ("EP", "EP"),
         ("LI", "Live"),
         ("SI", "Single"),
-        ("CO", "Compilation")
+        ("CO", "Compilation"),
+        ("ST", "Original Soundtrack")
     ]
 
     TYPE_OWNED_CHOICES = [
@@ -70,6 +66,12 @@ class Album(models.Model):
     date_released = models.DateField(blank=True, null=True, verbose_name="Date de sortie")
     date_listened = models.DateField(blank=True, null=True, verbose_name="Date d'écoute")
     date_added = models.DateTimeField(auto_now_add=True, verbose_name="Date d'ajout")
+    discovery_source = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        verbose_name="Origine de la découverte",
+    )
     date_rated = models.DateTimeField(blank=True, null=True, verbose_name="Date de notation")
     tracks_number = models.IntegerField(verbose_name="Nombre de morceaux")
     type_album = models.CharField(max_length=2, choices=ALBUM_TYPE_CHOICES, verbose_name="Type")
@@ -114,8 +116,8 @@ class Playlist(models.Model):
     optional = models.BooleanField(default=False, verbose_name="Optionel")
     date_added = models.DateField(auto_now=True, blank=True, null=True, verbose_name="Ajoutée")
     last_updated = models.DateField(blank=True, null=True, verbose_name="Modifiée")
-    like = models.IntegerField(default=0, blank=True, null=True)
-    fan = models.IntegerField(default=0, blank=True, null=True)
+    sclist_creation_date = models.DateField(blank=True, null=True, verbose_name="Date de création liste senscritique")
+
     thumbnail = models.ImageField(blank=True, upload_to='playlists')
 
     class Meta:
@@ -150,7 +152,6 @@ class Track(models.Model):
     disc = models.IntegerField(verbose_name="CD", default=1)
     playlist = models.ManyToManyField(Playlist, related_name="playlist", blank=True)
     number = models.IntegerField(verbose_name="Numéro")
-    featuring_artist = models.CharField(max_length=50, verbose_name="featuring", blank=True, null=True)
     duration = models.DurationField(verbose_name="durée")
     favorite = models.BooleanField(blank=True, default=False, verbose_name="favori")
     date_added = models.DateField(auto_now=True)
@@ -175,4 +176,32 @@ class Track(models.Model):
         super().save(*args, **kwargs)
 
 
+class RatingHistory(models.Model):
+    album = models.ForeignKey("Album", on_delete=models.CASCADE, related_name="rating_history")
+    old_rating = models.FloatField(blank=True, null=True, verbose_name="Old Rating")
+    new_rating = models.FloatField(blank=True, null=True, verbose_name="New Rating")
+    date_changed = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ["-date_changed"]
 
+
+class ScListFollowUp(models.Model):
+    playlist = models.ForeignKey("Playlist", on_delete=models.CASCADE, related_name="sc_list_follow_up")
+    old_views_number = models.IntegerField(default=0, blank=True, null=True)
+    new_views_number = models.IntegerField(default=0, blank=True, null=True)
+    old_likes_number = models.IntegerField(default=0, blank=True, null=True)
+    new_likes_number = models.IntegerField(default=0, blank=True, null=True)
+    old_albums_number = models.IntegerField(default=0, blank=True, null=True)
+    new_albums_number = models.IntegerField(default=0, blank=True, null=True)
+    date_changed = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ["-date_changed"]
+
+
+class ListeningLog(models.Model):
+    playlist = models.ForeignKey("Playlist", on_delete=models.CASCADE, related_name="listening_log")
+    start_date = models.DateField(verbose_name="Début de la période")
+    end_date = models.DateField(verbose_name="Fin de la période", null=True, blank=True)
+    nb_of_songs = models.IntegerField(verbose_name="Nombre de morceaux")
+    class Meta:
+        ordering = ["-start_date"]

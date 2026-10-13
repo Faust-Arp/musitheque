@@ -1,10 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base_library.html' %}
+
+{% block title %}
+    <title>Jeux</title>
+{% endblock %}
+
+{% block nav %}
+    <form action="{% url 'library:search' %}" method="POST" enctype="multipart/form-data" class="form-search">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="{{submit_button_value}}" class="btn btn-submit validate" style="display: None;">
+   </form>
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Section des albums */
+        .lastItems {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+            margin-top: 20px;
+        }
+    </style>
+
+    <div class="factsList">
+        <div class="fact">
+            <p>{{games.count}} jeux</p>
+        </div>
+        <div class="fact">
+            <p>{{nb_played_games_current_year}} joués</p>
+        </div>
+        <div class="fact">
+            <p>{{rated_games}} notés</p>
+            <p>{{unrated_games}} non notés</p>
+        </div>
+    </div>
+
+    <h1 class="lastItemsTitles">Derniers Jeux ajoutés</h1>
+    <div class="lastItems">
+        {% for last in last_added %}
+            <div class="lastItem">
+                <a href="{% url 'gaming:game' pk=last.pk %}"><img src="{{last.cover_image.url}}" alt="{{last.title}}" style="width: 150px; height: 210px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></a>
+                <p>{{ last.title }} <br> {{ last.add_date|date:'d F Y' }}</p>
+                <p></p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h1 class="lastItemsTitles">Derniers jeux joués</h1>
+    <div class="lastItems">
+        {% for last in last_played_games_current_year %}
+            <div class="lastItem">
+                <a href="{% url 'gaming:game' pk=last.game.pk%}"><img src="{{last.game.cover_image.url}}" alt="{{last.game.title}}" style="width: 150px; height: 210px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></a>
+                <p>{{ last.game.title }} <br> Du {{ last.start_date|date:'d F Y' }} au {{ last.end_date|date:'d F Y' }}</p>
+                <p></p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

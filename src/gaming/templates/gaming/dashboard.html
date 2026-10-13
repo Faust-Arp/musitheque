@@ -1,10 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% block content %}
+<div class="container" style="max-width: 900px; margin: 0 auto; padding: 20px; font-family: sans-serif;">
+    <h1 style="border-bottom: 2px solid #333; padding-bottom: 10px;">🎮 Mon Dashboard Gaming</h1>
+
+    <div class="game-list" style="margin-top: 30px;">
+        {% for game in games %}
+            <div class="game-card" style="display: flex; gap: 20px; background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #ddd; box-shadow: 2px 2px 10px rgba(0,0,0,0.05);">
+                
+                <div class="game-cover" style="flex-shrink: 0;">
+                    {% if game.cover_image %}
+                        <img src="{{ game.cover_image.url }}" alt="{{ game.title }}" style="width: 150px; height: 210px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    {% else %}
+                        <div style="width: 150px; height: 210px; background: #e0e0e0; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #777; font-size: 0.9em; text-align: center; padding: 10px;">
+                            Pas de jaquette
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="game-details" style="flex-grow: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <h2 style="margin: 0 0 5px 0; color: #2c3e50;">{{ game.title }}</h2>
+                        <span style="background: #3498db; color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.85em; font-weight: bold;">
+                            {{ game.rating|default:"-" }}/10
+                        </span>
+                    </div>
+
+                    <p style="margin: 5px 0; font-size: 0.9em; color: #666;">
+                        Sortie : <strong>{{ game.release_date|date:"d M Y"|default:"Inconnue" }}</strong> | 
+                        Achat : <strong>{{ game.purchase_date|date:"d M Y" }}</strong> ({{ game.price }}€)
+                    </p>
+
+                    <div class="tags" style="margin: 10px 0;">
+                        {% for tag in game.tags.all %}
+                            <span style="display: inline-block; background: #e8e8e8; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; color: #555; margin-right: 5px;">#{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="progression" style="margin-top: 15px;">
+                        <label style="font-size: 0.8em; font-weight: bold; color: #444;">Succès : {{ game.unlocked_achievements }}/{{ game.total_achievements }}</label>
+                        <div style="width: 100%; background: #ddd; height: 10px; border-radius: 5px; margin-top: 5px; overflow: hidden;">
+                            <div style="width: {{ game.progression_percentage }}%; background: #27ae60; height: 100%;"></div>
+                        </div>
+                    </div>
+
+                    {% if game.comment %}
+                        <p style="margin-top: 15px; font-style: italic; color: #555; font-size: 0.9em; border-left: 3px solid #ccc; padding-left: 10px;">
+                            "{{ game.comment|truncatewords:20 }}"
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <div style="text-align: center; padding: 50px; color: #888;">
+                <p>Aucun jeu trouvé. File dans l'admin pour en ajouter !</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -2,6 +2,7 @@ from django.urls import path
 from library.views import BandList, BandCreate, BandEdit, BandDetail, BandDelete
 from library.views import AlbumList, AlbumDelete, AlbumCreate, AlbumDetail, AlbumEdit
 from library.views import TrackCreate, TrackEdit, PlaylistList, PlaylistDetail, searchview
+from library.views import PlaylistFollowUpCreateView, PlaylistLIsteningLogCreateView
 
 app_name = "library"
 
@@ -20,5 +21,7 @@ urlpatterns = [
     path('album/<pk>/edit-tracks', TrackEdit.as_view(), name='edit-tracks'),
     path('playlists', PlaylistList.as_view(), name='playlists-list'),
     path('playlist/<pk>', PlaylistDetail.as_view(), name='playlist'),
+    path('playlist/<pk>/follow-up', PlaylistFollowUpCreateView.as_view(), name='follow-up'),
+    path('playlist/<pk>/listening-log', PlaylistLIsteningLogCreateView.as_view(), name='listening-log'),
     path('search', searchview, name='search'),
 ]

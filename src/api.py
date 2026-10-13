@@ -112,7 +112,7 @@ def get_album_by_released_year():
 
 def get_rated_album_by_released_year():
 
-    albums = Album.objects.filter(date_released__year__gte=1988, rating__gt=0).order_by('date_released')
+    albums = Album.objects.filter(date_released__year__gte=1988, rating__gt=0).exclude(type_album="CO").order_by('date_released')
     rated_album_by_year = {}
 
     for album in albums:
@@ -256,7 +256,7 @@ def get_all_families():
 
 def get_album_number_by_listened_and_released_year():
 
-    years = [*range(2000, 2026, 1)]
+    years = [*range(2000, 2027, 1)]
     listened_count = []
     released_count = []
 

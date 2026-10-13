@@ -1,10 +1,214 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base_library.html' %}
+{%load static%}
+{% load library_extras %}
+
+{% block title%} <title>{{ game.title }}</title> {% endblock %}
+
+{% block content %}
+
+    <style>
+        /* Amélioration des Tags */
+        .history-item {
+            list-style: none;
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .history-date {
+            background-color: #3d3d3d;
+            color: #00d4ff;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 1px solid #555;
+        }
+
+        /* Amélioration du Commentaire */
+        .album-comment {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #252525;
+            border-left: 4px solid #00d4ff;
+            border-radius: 4px;
+        }
+
+        .album-comment h2 {
+            color: #00d4ff;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .album-comment p {
+            font-style: normal;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        /* Amélioration des Images */
+        .library-img img {
+            width: 250px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+
+        .library-img {
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* --- NOUVEAU : Style pour la barre de succès Steam --- */
+        .steam-achievements-container {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            background-color: #1a1a1a; /* Fond légèrement plus foncé pour contraster */
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .steam-achievements-label {
+            color: #00d4ff;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .achievement-bar-track {
+            width: 100%;
+            height: 10px;
+            background-color: #333;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .achievement-bar-progress {
+            height: 100%;
+            /* Dégradé vert néon pour rappeler le style "succès déverrouillé" */
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            width: 0%; /* Sera écrasé par le style inline */
+            border-radius: 5px;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.6); /* Lueur verte */
+            transition: width 1s ease-in-out;
+        }
+
+        .achievement-stats-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        .achievement-percent {
+            color: #fff;
+            font-weight: bold;
+        }
+        /* ------------------------------------------------------- */
+    </style>
+
+    <div id="library-content">
+        <div class="library-img">
+                <img src="{{ game.cover_image.url}}" alt="{{game.title}}">
+        </div>
+        <div class="bio">
+            <h1>{{ game.title }}</h1>
+            <div class="bio-info">
+                <p>Studio de développement : {{ game.developper }}</p>
+                <p>Éditeur : {{ game.editor }}</p>
+                <p>Sorti le {{ game.release_date|date:'d F Y' }}</p>
+
+                {% if game.sessions.all %}
+                <p>Dernière session de jeu : {{ game.sessions.first }}</p>
+
+                <!-- DÉBUT : Intégration Barre de Succès -->
+                {% if game.total_achievements > 0 %}
+                <div class="steam-achievements-container">
+                    <span class="steam-achievements-label">Progression des succès Steam</span>
+
+                    <div class="achievement-bar-track">
+                        {% widthratio game.unlocked_achievements game.total_achievements 100 as progress_percent %}
+                        <div class="achievement-bar-progress" style="width:{{progress_percent}}%;"></div>
+                    </div>
+
+                    <div class="achievement-stats-text">
+                        <span>{{ game.unlocked_achievements }} / {{ game.total_achievements }} déverrouillés</span>
+                        <span class="achievement-percent">{{ progress_percent }}%</span>
+                    </div>
+                </div>
+                {% endif %}
+                <!-- FIN : Intégration Barre de Succès -->
+
+                {% else %}
+                <p>Pas encore joué</p>
+                {% endif %}
+
+                <p>
+                {% for tag in game.tags.all %}
+                    <li class="history-item">
+                        <span class="history-date">{{ tag.name }}</span>
+                    </li>
+                {% endfor %}
+                </p>
+
+                <p>
+                {% if game.rating %}
+                    <span class="rating-badge
+                        {% if game.rating <= 4 %}badge-red
+                        {% elif game.rating <= 7 %}badge-yellow
+                        {% elif game.rating <= 9%}badge-green
+                        {% else %}badge-gold{% endif %}">
+                        {{ game.rating }} / 10
+                    </span>
+                {% else %}
+                    <span class="rating-badge" style="background-color: #444;">Non Noté</span>
+                {% endif %}
+                </p>
+
+                {% if game.comment %}
+                    <div class="album-comment">
+                        <h2>Commentaire</h2>
+                        <p>{{ game.comment|linebreaks }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="tableContainer">
+            <h1>Liste des sessions</h1>
+            <table id="tableContainerDetails">
+                <thead>
+                    <tr>
+                        <th>Début</th>
+                        <th>Fin</th>
+                        <th>Temps</th>
+                        <th>Objet</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for session in game.sessions.all %}
+                    <tr>
+                        <td class="track-number">{{ session.start_date }}</td>
+                        {% if session.end_date == NULL %}
+                            <td class="track-title">En Cours</td>
+                        {% else %}
+                            <td class="track-title">{{session.end_date}}</td>
+                        {% endif %}
+                        <td class="track-duration">{{session.time_played}}h</td>
+                        <td class="track-playlist">{{session.summary}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 
-from library.models import Band, Album
+from library.models import Band, Album, Track
 from statistic.filters import AlbumFilter, BandFilter
 import api
 
@@ -25,11 +25,13 @@ class BandsStatsView(ListView):
 
 class AlbumsStatsView(ListView):
     model = Album
-    queryset = Album.objects.all()
+    # Optimisation ici : on pré-charge le groupe et les genres principaux
+    queryset = Album.objects.select_related('groupe').prefetch_related('genre_primary')
     template_name = "statistic/albums.html"
     context_object_name = "albums"
 
     def get_queryset(self):
+        # On s'assure d'utiliser le queryset optimisé défini ci-dessus
         queryset = super().get_queryset()
         self.filterset = AlbumFilter(self.request.GET, queryset=queryset)
         return self.filterset.qs
@@ -183,4 +185,17 @@ class AlbumByOwnership(ListView):
         context['downloaded_count'] = downloaded_count
 
         context['form'] = self.filterset.form
+        return context
+
+
+class YearView(TemplateView):
+    template_name = "statistic/year.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        year = self.kwargs.get('year')
+
+        context['year'] = year
+        context['listened_albums'] = Album.objects.filter(date_listened__year = year).count
+        context["five_stars_tracks"] = Track.objects.filter(album__date_released__year=year, rating=5).count
         return context

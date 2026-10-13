@@ -43,7 +43,5 @@ class BandFilter(django_filters.FilterSet):
         fields = {
             'name': ['icontains'],
             'country': ['icontains'],
-            'region': ['icontains'],
-            'city': ['icontains'],
             'active': ['exact']
         }
