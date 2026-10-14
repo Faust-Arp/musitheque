@@ -3,6 +3,7 @@ function search() {
     var input = document.getElementById("recherche");
     if (!input) return; // Sécurité si le champ n'existe pas
 
+    
     var filter = input.value.toLowerCase();
 
     // 2. Ciblage des div de classe "lastItem" au lieu des "li"
@@ -15,11 +16,13 @@ function search() {
         // textContent récupère tout le texte, peu importe la balise (p, a, etc.)
         var textContent = item.textContent || item.innerText;
 
+        
         // On compare le texte de l'élément avec la recherche
         if (textContent.toLowerCase().indexOf(filter) > -1) {
             // Si ça correspond, on affiche l'élément.
             // On remet un style vide ou 'block' pour laisser le CSS Grid (dans .lastItems) gérer l'affichage.
             item.style.display = "";
+            item.style.display = ""; 
         } else {
             // Sinon, on cache l'élément
             item.style.display = "none";

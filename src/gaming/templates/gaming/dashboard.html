@@ -6,6 +6,7 @@
         {% for game in games %}
             <div class="game-card" style="display: flex; gap: 20px; background: #f9f9f9; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #ddd; box-shadow: 2px 2px 10px rgba(0,0,0,0.05);">
 
+                
                 <div class="game-cover" style="flex-shrink: 0;">
                     {% if game.cover_image %}
                         <img src="{{ game.cover_image.url }}" alt="{{ game.title }}" style="width: 150px; height: 210px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
@@ -26,6 +27,7 @@
 
                     <p style="margin: 5px 0; font-size: 0.9em; color: #666;">
                         Sortie : <strong>{{ game.release_date|date:"d M Y"|default:"Inconnue" }}</strong> |
+                        Sortie : <strong>{{ game.release_date|date:"d M Y"|default:"Inconnue" }}</strong> | 
                         Achat : <strong>{{ game.purchase_date|date:"d M Y" }}</strong> ({{ game.price }}€)
                     </p>
 
