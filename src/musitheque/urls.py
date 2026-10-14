@@ -10,5 +10,6 @@ urlpatterns = [
     path('library/', include('library.urls')),
     path('compte/', include('django.contrib.auth.urls')),
     path('compte/nouveau', signup, name="signup"),
-    path('statistic/', include('statistic.urls'))
+    path('statistic/', include('statistic.urls')),
+    path('gaming/', include('gaming.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

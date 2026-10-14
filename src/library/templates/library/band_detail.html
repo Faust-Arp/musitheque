@@ -21,8 +21,6 @@
             <h1>{{ band.name }}</h1>
             <div class="bio-info">
                 <p>Pays - {{ band.country }}</p>
-                <p>Région - {{ band.region }}</p>
-                <p>Ville - {{ band.city }}</p>
                 <p>Ajouté le : {{ band.date_added|date:'d F Y' }}</p>
                 <p>
                     {% if band.active %}
@@ -130,6 +128,27 @@
                                 <td>
                                     {% if compile.rating %}
                                         {{ compile.rating }}/5
+                                    {% else %}
+                                        Non Noté
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            {% if soundtracks %}
+                <h1>Original Soundtracks</h1>
+                <table class="tableContainerDetails">
+                    <tbody>
+                        {% for soundtrack in soundtracks %}
+                            <tr>
+                                <td><img src="{{ soundtrack.thumbnail.url }}" alt="{{soundtrack.slug}}" width="75" height="75"></td>
+                                <td><a href="{% url 'library:album' pk=soundtrack.pk %}">{{ soundtrack.title }}</a></td>
+                                <td>{{soundtrack.date_released|date:'Y'}}</td>
+                                <td>
+                                    {% if soundtrack.rating %}
+                                        {{ soundtrack.rating }}/5
                                     {% else %}
                                         Non Noté
                                     {% endif %}

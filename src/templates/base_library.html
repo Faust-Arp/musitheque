@@ -8,11 +8,6 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
-    <script src="{% static 'javascript/script.js'%}"></script>
-    <script src="{% static 'javascript/multiselect-dropdown.js'%}" ></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-    {% block script %}
-    {% endblock %}
 </head>
 <body>
 
@@ -20,6 +15,7 @@
         <div class="navbar">
             <a href="{% url 'library:bands-list' %}">Artistes</a>
             <a href="{% url 'library:albums-list' %}">Albums</a>
+            <a href="{% url 'gaming:games-list' %}">Gaming</a>
             <a href="{% url 'library:playlists-list' %}">Playlists</a>
             <a href="{% url 'statistic:album-by-years' %}">Statistiques</a>
             {% block nav %}{% endblock %}
@@ -31,5 +27,12 @@
         {% block content %}
         {% endblock %}
     </section>
+
+    <script src="{% static 'javascript/script.js'%}"></script>
+    <script src="{% static 'javascript/multiselect-dropdown.js'%}" ></script>
+    <script src="{% static 'javascript/recherche.js'%}" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    {% block script %}
+    {% endblock %}
 </body>
 </html>

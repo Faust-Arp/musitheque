@@ -22,7 +22,7 @@
                             <th onclick="sortTable(2)">Sortie</th>
                             <th onclick="sortTable(3)">Mois Écouté</th>
                             <th onclick="sortTable(4)">Année Écouté</th>
-                            <th onclick="sortTable(5)">Genres principaux</th>
+                            <th onclick="sortTable(5)">Famille</th>
                             <th onclick="sortTable(6)">Note</th>
                         </tr>
                     </thead>
@@ -34,7 +34,14 @@
                                 <td>{{ album.date_released|date:'Y' }}</td>
                                 <td>{{ album.date_listened|date:'M' }}</td>
                                 <td>{{ album.date_listened|date:'Y' }}</td>
-                                <td>{{ album.genre_primary.all|join:", " }}</td>
+                                <td>
+                                    {% regroup album.genre_primary.all by family as family_list %}
+                                    {% for family in family_list %}
+                                        {{ family.grouper }}{% if not forloop.last %}, {% endif %}
+                                    {% empty %}
+                                        -
+                                    {% endfor %}
+                                </td>
                                 <td>{{ album.rating }}</td>
                             </tr>
                         {% endfor %}

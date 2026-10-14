@@ -5,6 +5,100 @@
 {% block title%} <title>{{ playlist.name }}</title> {% endblock %}
 
 {% block content %}
+
+    <style>
+/* Conteneur principal plus sombre que le fond du site */
+.sc-stats-card-dark {
+    background-color: #1e1e26; /* Gris nuit */
+    border: 1px solid #33333d;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+/* En-tête avec un accent de couleur néon/cyan */
+.sc-stats-card-dark .card-header {
+    background-color: #252531;
+    border-bottom: 1px solid #33333d;
+    padding: 1rem 1.5rem;
+}
+
+.sc-stats-card-dark .card-header h3 {
+    color: #0dcaf0; /* Cyan néon */
+    font-weight: 600;
+}
+
+/* Libellés des stats */
+.stat-label-dark {
+    color: #9fa0a6;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+}
+
+/* Les chiffres en blanc pur ou léger bleuté */
+.stat-value-dark {
+    color: #ffffff;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+/* Badges d'évolution */
+.delta-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.delta-up {
+    background-color: rgba(40, 167, 69, 0.15);
+    color: #4cd137;
+}
+
+.delta-same {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #888;
+}
+
+/* Séparateur vertical discret */
+.border-divider-dark {
+    border-left: 1px solid #33333d !important;
+
+    /* Style pour le tableau de logs en mode sombre */
+.listening-log-card {
+    background-color: #1e1e26;
+    border: 1px solid #33333d;
+    border-radius: 12px;
+    height: 100%; /* Pour que les deux cartes aient la même hauteur */
+}
+
+.table-dark-custom {
+    color: #9fa0a6;
+    font-size: 0.85rem;
+}
+
+.table-dark-custom thead {
+    color: #0dcaf0;
+    border-bottom: 1px solid #33333d;
+}
+
+.table-dark-custom td {
+    border-top: 1px solid #2a2a35;
+    padding: 8px;
+}
+
+.text-highlight {
+    color: #ffffff;
+    font-weight: 600;
+}
+}
+    </style>
+
     <div id="library-content">
         <div class="library-img">
             {% if playlist.thumbnail %}
@@ -12,16 +106,137 @@
             {% else %}
                 <img src="https://picsum.photos/250/250" alt="Random Image">
             {% endif %}
+            <form action="{% url 'library:follow-up' pk=playlist.pk %}">
+                <button class="btn btn-edit">SensCritique</button>
+            </form>
+            <form action="{% url 'library:listening-log' pk=playlist.pk %}">
+                <button class="btn btn-edit">Écoute</button>
+            </form>
         </div>
-        <div class="bio">
-            <h1>{{ playlist.name }}</h1>
-            <div class="bio-info">
-                <p>Durée : {{ full_duration }}</p>
-                <p>Nombre de morceaux : {{ number_of_tracks }}</p>
-                <p>Nombre d'albums : {{ number_of_albums }}</p>
-                <p>Dernière mise à jour : {{ playlist.last_updated }}</p>
+
+    <div class="bio">
+        <h1>{{ playlist.name }}</h1>
+        <div class="bio-info mb-4">
+
+            <p>Durée : {{ full_duration }} | Morceaux : {{ number_of_tracks }} | Albums : {{ number_of_albums }}</p>
+            <p>Dernière mise à jour : {{ playlist.last_updated }}</p>
+            {% if playlist.sclist_creation_date %}
+            <p>Création de la liste sur SC : {{ playlist.sclist_creation_date }}</p>
+            {% else %}
+            <p>Liste non créée sur SC</p>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card sc-stats-card-dark h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="h6 mb-0">Statistiques SensCritique</h3>
+                    </div>
+                    <div class="card-body py-3">
+                        {% if has_sc_data %}
+                            <div style="position: relative; height: 220px; width: 100%;">
+                                <canvas id="scChart"></canvas>
+                            </div>
+                            <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                const ctx = document.getElementById('scChart').getContext('2d');
+                                new Chart(ctx, {
+                                    type: 'line',
+                                    data: {
+                                        labels: {{ sc_labels|safe }},
+                                        datasets: [
+                                            {
+                                                label: 'Vues',
+                                                data: {{ sc_views|safe }},
+                                                borderColor: '#0dcaf0',
+                                                backgroundColor: 'rgba(13, 202, 240, 0.1)',
+                                                tension: 0.2,
+                                                fill: false
+                                            },
+                                            {
+                                                label: 'Likes',
+                                                data: {{ sc_likes|safe }},
+                                                borderColor: '#ff6384',
+                                                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                                tension: 0.2,
+                                                fill: false
+                                            },
+                                            {
+                                                label: 'Albums',
+                                                data: {{ sc_albums|safe }},
+                                                borderColor: '#4bc0c0',
+                                                backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                                                tension: 0.2,
+                                                fill: false
+                                            }
+                                        ]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        plugins: {
+                                            legend: {
+                                                labels: {
+                                                    color: '#9fa0a6',
+                                                    font: { size: 12 }
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            x: {
+                                                ticks: { color: '#9fa0a6' },
+                                                grid: { color: '#2a2a35' }
+                                            },
+                                            y: {
+                                                ticks: { color: '#9fa0a6' },
+                                                grid: { color: '#2a2a35' }
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                            </script>
+                        {% else %}
+                            <p class="text-center text-muted my-3">Aucune donnée disponible</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card listening-log-card h-100">
+                    <div class="card-header">
+                        <h3 class="h6 mb-0 text-info">Historique d'écoute</h3>
+                    </div>
+                    <div class="card-body p-0"> <table class="table table-dark-custom mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-3">Période</th>
+                                    <th class="text-center">Titres</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for log in listening_logs %}
+                                <tr>
+                                    <td class="ps-3">
+                                        Du {{ log.start_date|date:"d/m/y" }}
+                                        {% if log.end_date %}au {{ log.end_date|date:"d/m/y" }}{% endif %}
+                                    </td>
+                                    <td class="text-center text-highlight">{{ log.nb_of_songs }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center py-4 text-muted">Aucun log enregistré.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
         <div class="tableContainer">
             <h1>Liste des morceaux</h1>
             <table id="tableContainerDetails">

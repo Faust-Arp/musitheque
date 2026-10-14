@@ -4,7 +4,8 @@ from django import forms
 from django.db.transaction import commit
 from django.forms import inlineformset_factory
 
-from library.models import Track, Album
+from library.models import Track, Album, ScListFollowUp, ListeningLog
+
 
 class SearchForm(forms.Form):
     name = forms.CharField(label="",
@@ -29,6 +30,7 @@ class AlbumForm(forms.ModelForm):
             "groupe",
             "number_album",
             "tracks_number",
+            "discovery_source",
             "date_released",
             "date_listened",
             "type_album",
@@ -103,3 +105,37 @@ class TracksEditForm(forms.ModelForm):
             "rating",
             "favorite"
         ]
+
+class PlaylistFollowUpForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = ScListFollowUp
+        # On ne demande à l'utilisateur que les données fraîches
+        fields = ['new_views_number', 'new_likes_number', 'new_albums_number']
+        labels = {
+            'new_views_number': 'Nombre de vues actuel',
+            'new_likes_number': 'Nombre de likes actuel',
+            'new_albums_number': 'Nombre d\'albums actuel',
+        }
+
+class PlaylistListeningLogForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = ListeningLog
+        # On ne demande à l'utilisateur que les données fraîches
+        fields = ['start_date', 'end_date', 'nb_of_songs']
+        labels = {
+            'start_date': 'Début de l\'écoute',
+            'end_date': 'Fin de l\'écoute',
+            'nb_of_songs': 'Nombre de morceaux lors de l\'écoute',
+        }

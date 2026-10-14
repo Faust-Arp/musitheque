@@ -37,8 +37,7 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 365  # 31536000 secondes
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin'
-    ,
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -48,6 +47,7 @@ INSTALLED_APPS = [
     'library',
     'statistic',
     'player',
+    'gaming',
     'django_filters',
 ]
 

@@ -1,12 +1,10 @@
 {% extends 'base_library.html' %}
 
-
 {% block title %}
     <title>Playlists</title>
 {% endblock %}
 
 {% block nav %}<input type="text" id="recherche" placeholder="Rechercher" onkeyup="search()">{% endblock %}
-
 
 {% block content %}
     <style>
@@ -25,7 +23,94 @@
             padding: 0 20px;
             margin-top: 20px;
         }
+
+        /* Nouveaux styles pour le rapport */
+        .report-section {
+            background-color: #2a2a2a;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .report-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #4db8ff;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+        }
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        .stat-name {
+            font-weight: 500;
+        }
+        .stat-value {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .growth-positive {
+            color: #4cd964;
+            font-weight: bold;
+        }
+        .growth-neutral {
+            color: #888;
+        }
     </style>
+
+    <div class="factsList">
+        <div class="fact">
+            <p>{{nb_of_genre_playlists}} playlists de genre</p>
+        </div>
+        <div class="fact">
+            <p>{{nb_of_year_playlists}} playlists d'année</p>
+        </div>
+    </div>
+
+    <!-- NOUVELLE SECTION : Rapport de performance -->
+    {% if top_growing_playlists %}
+    <div class="report-section">
+        <h3 class="report-title">📈 Top 5 des listes en croissance (Vues)</h3>
+        {% for item in top_growing_playlists %}
+            <div class="stat-row">
+                <div class="stat-name">
+                    <a href="{% url 'library:playlist' pk=item.playlist.pk %}" style="color: #f0f0f0; text-decoration: none;">
+                        {{ item.playlist.name }}
+                    </a>
+                </div>
+                <div class="stat-value">
+                    {% if item.views_growth > 0 %}
+                        <span class="growth-positive">+{{ item.views_growth }} vues</span>
+                    {% else %}
+                        <span class="growth-neutral">{{ item.views_growth }} vues</span>
+                    {% endif %}
+
+                    <div style="font-size: 0.75em; margin-top: 4px; color: #ff9800; font-weight: bold;">
+                        ⚠️ {{ item.album_diff }} album(s) à enregistrer
+                    </div>
+                    <div style="font-size: 0.75em; opacity: 0.7;">
+                        Actuel: {{ item.current_albums }} | Enregistré: {{ item.recorded_albums }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <p style="font-size: 0.8rem; color: #666; margin-top: 15px; font-style: italic;">
+            Basé sur la différence entre le dernier et l'avant-dernier suivi enregistré.
+        </p>
+    </div>
+    {% else %}
+    <div class="report-section">
+        <p style="color: #888;">Pas encore assez de données de suivi pour afficher les tendances.</p>
+    </div>
+    {% endif %}
+
     <div class="lastItems">
         {% for playlist in playlists %}
             <div class="lastItem">

@@ -132,65 +132,37 @@ function displayChart(){
 }
 
 function sortTable(n) {
-  var rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  var table1 = document.getElementById("tableContainerDetails");
-  var table2 = document.getElementById("displayFilterDetails");
-  var table;
+  const table = document.getElementById("tableContainerDetails") || document.getElementById("displayFilterDetails");
+  if (!table) return;
 
-  if ( table1 === null) {
-    table = table2;
-  } else {
-    table = table1;
-  }
-  console.log(table)
-  switching = true;
-  // Set the sorting direction to ascending:
-  dir = "asc";
-  /* Make a loop that will continue until
-  no switching has been done: */
-  while (switching) {
-    // Start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    /* Loop through all table rows (except the
-    first, which contains table headers): */
-    for (i = 1; i < (rows.length - 1); i++) {
-      // Start by saying there should be no switching:
-      shouldSwitch = false;
-      /* Get the two elements you want to compare,
-      one from current row and one from the next: */
-      x = rows[i].getElementsByTagName("TD")[n].textContent;
-      y = rows[i + 1].getElementsByTagName("TD")[n].textContent;
-      /* Check if the two rows should switch place,
-      based on the direction, asc or desc: */
-      if (dir == "asc") {
-        if (x.toLowerCase() > y.toLowerCase()) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x.toLowerCase() < y.toLowerCase()) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      /* If a switch has been marked, make the switch
-      and mark that a switch has been done: */
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      // Each time a switch is done, increase this count by 1:
-      switchcount ++;
-    } else {
-      /* If no switching has been done AND the direction is "asc",
-      set the direction to "desc" and run the while loop again. */
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
+  const tbody = table.tBodies[0] || table; // Cible le corps du tableau
+  const rows = Array.from(tbody.querySelectorAll("tr:not(:has(th))")); // On ignore l'en-tête
+
+  // 1. Déterminer la direction (asc/desc)
+  // On stocke la direction actuelle sur l'élément pour savoir s'il faut inverser
+  let dir = table.getAttribute("data-sort-dir") === "asc" ? "desc" : "asc";
+  table.setAttribute("data-sort-dir", dir);
+
+  // 2. Fonction de nettoyage pour ignorer "The", "A", "An"
+  const prepareForSort = (str) => {
+    return str.trim().toLowerCase().replace(/^(the)\s+/i, "");
+  };
+
+  // 3. Le Tri logic (en mémoire)
+  rows.sort((rowA, rowB) => {
+    const xText = rowA.getElementsByTagName("TD")[n].textContent;
+    const yText = rowB.getElementsByTagName("TD")[n].textContent;
+
+    const x = prepareForSort(xText);
+    const y = prepareForSort(yText);
+
+    // Utilisation de localeCompare pour une gestion parfaite des accents (é, à, etc.)
+    const comparison = x.localeCompare(y, 'fr', { sensitivity: 'base' });
+
+    return dir === "asc" ? comparison : -comparison;
+  });
+
+  // 4. Réinjection des lignes triées dans le DOM
+  //appendChild sur un élément déjà présent le déplace simplement
+  rows.forEach(row => tbody.appendChild(row));
 }

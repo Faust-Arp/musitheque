@@ -70,7 +70,7 @@ body {
     }
 
     .fact {
-        background: #2a2a2a;
+        background-color: #856088;
         border-radius: 12px;
         padding: 15px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -109,7 +109,7 @@ body {
     /* Section des derniers artistes ajoutés */
 
     .lastItem {
-        background: #2a2a2a;
+        background-color: #856088;
         border-radius: 12px;
         text-align: center;
         padding: 15px;
@@ -119,6 +119,7 @@ body {
 
     .lastItem:hover {
         transform: scale(1.03);
+        background-color: #62865f;
     }
 
     .lastItem img {
@@ -502,4 +503,65 @@ input[type=number]{
 .filters {
     grid-area: find;
     background-color: black;
+}
+
+/* Base du badge (commune à tous) */
+.rating-badge {
+    display: inline-block;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-right: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Couleurs par paliers */
+.badge-red    { background-color: #e74c3c; } /* 2.5 */
+.badge-yellow { background-color: #f1c40f; color: black; } /* 3.0 */
+.badge-green  { background-color: #27ae60; } /* 3.5 - 4.0 */
+.badge-gold   { background-color: #9b59b6; border: 1px solid #fff; } /* 4.5 - 5.0 */
+
+/* Section Historique */
+.rating-history {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #1a1a1a;
+    border-left: 4px solid steelblue;
+    border-radius: 0 8px 8px 0;
+}
+
+.rating-history h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.history-item {
+    font-size: 0.85rem;
+    padding: 4px 0;
+    border-bottom: 1px solid #333;
+    color: #ddd;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-date {
+    color: #666;
+    margin-right: 10px;
+}
+
+.history-change {
+    font-family: 'Mukta';
 }

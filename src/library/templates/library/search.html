@@ -19,4 +19,10 @@
                 <a href="{% url 'library:album' pk=album.pk %}">{{ album.title }}</a><br>
             {% endfor %}
     {% endif %}
+    {% if games %}
+        <h1>Jeux</h1>
+            {% for game in games%}
+                <a href="{% url 'gaming:game' pk=game.pk %}">{{ game.title }}</a><br>
+            {% endfor %}
+    {% endif %}
 {% endblock %}

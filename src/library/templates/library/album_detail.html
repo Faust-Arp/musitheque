@@ -39,17 +39,44 @@
                 <p>Genre Primaire - {% for genre_primary in album.genre_primary.all %}{{ genre_primary }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
                 <p>
                     {% if album.rating %}
-                        {{ album.rating }}/5 - Le {{ album.date_rated|date:'d F Y' }}
+                        <span class="rating-badge
+                            {% if album.rating <= 2.5 %}badge-red
+                            {% elif album.rating == 3.0 %}badge-yellow
+                            {% elif album.rating <= 4.0 %}badge-green
+                            {% else %}badge-gold{% endif %}">
+                            {{ album.rating }} / 5
+                        </span>
+                        <span style="font-size: 0.9rem; color: #888;">Noté le {{ album.date_rated|date:'d F Y' }}</span>
                     {% else %}
-                        Non Noté
-                    {% endif %}
-                    {% if album.comment %}
-                        <div class="album-comment">
-                            <h2>Commentaire</h2>
-                            <p>{{ album.comment|linebreaks }}</p>
-                        </div>
+                        <span class="rating-badge" style="background-color: #444;">Non Noté</span>
                     {% endif %}
                 </p>
+                {% if rating_history %}
+                <div class="rating-history">
+                    <h3>Historique des modifications</h3>
+                    <ul class="history-list">
+                        {% for entry in rating_history|slice:":5" %} {# On affiche les 5 derniers #}
+                        <li class="history-item">
+                            <span class="history-date">{{ entry.date_changed|date:'d/m/Y' }}</span>
+                            <span class="history-change">
+                                Note passée de <strong>{{ entry.old_rating }}</strong> à <strong>{{ entry.new_rating }}</strong>
+                            </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% else %}
+                <div class="rating-history">
+                    <p>Pas d'historique</p>
+                </div>
+                {% endif %}
+
+                {% if album.comment %}
+                    <div class="album-comment">
+                        <h2>Commentaire</h2>
+                        <p>{{ album.comment|linebreaks }}</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
         <div class="tableContainer">
