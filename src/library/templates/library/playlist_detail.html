@@ -132,31 +132,73 @@
                 <div class="card sc-stats-card-dark h-100">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="h6 mb-0">Statistiques SensCritique</h3>
-                        {% if last_followup %}
-                            <span class="badge bg-dark text-info border border-info" style="font-size: 0.7rem;">
-                                {{ last_followup.date_changed|date:"d/m/Y" }}
-                            </span>
-                        {% endif %}
                     </div>
-                    <div class="card-body py-4">
-                        {% if last_followup %}
-                            <div class="row text-center">
-                                <div class="col">
-                                    <div class="stat-label-dark">Vues</div>
-                                    <div class="h2 stat-value-dark mb-0">{{last_followup.old_views_number}} -> {{last_followup.new_views_number}}</div>
-                                    <div class="delta-badge delta-up">▲</div>
-                                </div>
-                                <div class="col border-divider-dark">
-                                    <div class="stat-label-dark">Likes</div>
-                                    <div class="h2 stat-value-dark mb-0">{{last_followup.old_likes_number}} -> {{last_followup.new_likes_number}}</div>
-                                </div>
-                                <div class="col border-divider-dark">
-                                    <div class="stat-label-dark">Nombre d'Albums</div>
-                                    <div class="h2 stat-value-dark mb-0">{{last_followup.old_albums_number}} -> {{ last_followup.new_albums_number }}</div>
-                                </div>
+                    <div class="card-body py-3">
+                        {% if has_sc_data %}
+                            <div style="position: relative; height: 220px; width: 100%;">
+                                <canvas id="scChart"></canvas>
                             </div>
+                            <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                const ctx = document.getElementById('scChart').getContext('2d');
+                                new Chart(ctx, {
+                                    type: 'line',
+                                    data: {
+                                        labels: {{ sc_labels|safe }},
+                                        datasets: [
+                                            {
+                                                label: 'Vues',
+                                                data: {{ sc_views|safe }},
+                                                borderColor: '#0dcaf0',
+                                                backgroundColor: 'rgba(13, 202, 240, 0.1)',
+                                                tension: 0.2,
+                                                fill: false
+                                            },
+                                            {
+                                                label: 'Likes',
+                                                data: {{ sc_likes|safe }},
+                                                borderColor: '#ff6384',
+                                                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                                tension: 0.2,
+                                                fill: false
+                                            },
+                                            {
+                                                label: 'Albums',
+                                                data: {{ sc_albums|safe }},
+                                                borderColor: '#4bc0c0',
+                                                backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                                                tension: 0.2,
+                                                fill: false
+                                            }
+                                        ]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        plugins: {
+                                            legend: {
+                                                labels: {
+                                                    color: '#9fa0a6',
+                                                    font: { size: 12 }
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            x: {
+                                                ticks: { color: '#9fa0a6' },
+                                                grid: { color: '#2a2a35' }
+                                            },
+                                            y: {
+                                                ticks: { color: '#9fa0a6' },
+                                                grid: { color: '#2a2a35' }
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                            </script>
                         {% else %}
-                            <p class="text-center text-muted my-3">Aucun suivi.</p>
+                            <p class="text-center text-muted my-3">Aucune donnée disponible</p>
                         {% endif %}
                     </div>
                 </div>

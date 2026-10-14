@@ -13,6 +13,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 
 import api
 import datetime
+from django.utils import timezone
 from library.forms import AlbumForm, SearchForm, TracksCreateForm, TracksEditForm, PlaylistFollowUpForm, PlaylistListeningLogForm
 from library.models import Band, Album, Track, Playlist, ScListFollowUp, RatingHistory, ListeningLog
 from gaming.models import Game
@@ -452,9 +453,14 @@ class PlaylistDetail(DetailView):
 
         tracks = Track.objects.filter(playlist__id=playlist.pk)
 
-        # Statistiques de suivi SensCritique
-        # Grâce à l'ordering ["-date_changed"], le .first() est le plus récent
-        last_followup = playlist.sc_list_follow_up.first()
+        # Statistiques de suivi SensCritique (dernier an maximum, ordre chronologique)
+        one_year_ago = timezone.now() - datetime.timedelta(days=365)
+        followups = list(playlist.sc_list_follow_up.filter(date_changed__gte=one_year_ago).order_by('date_changed'))
+
+        sc_labels = [f.date_changed.strftime("%d/%m/%Y") for f in followups]
+        sc_views = [f.new_views_number or 0 for f in followups]
+        sc_likes = [f.new_likes_number or 0 for f in followups]
+        sc_albums = [f.new_albums_number or 0 for f in followups]
 
         number_of_albums = tracks.values_list('album', flat=True).distinct().count()
 
@@ -462,7 +468,11 @@ class PlaylistDetail(DetailView):
         context['full_duration'] = api.get_playlist_duration(playlist.pk)
         context['number_of_tracks'] = tracks.count()
         context['number_of_albums'] = number_of_albums
-        context['last_followup'] = last_followup
+        context['sc_labels'] = sc_labels
+        context['sc_views'] = sc_views
+        context['sc_likes'] = sc_likes
+        context['sc_albums'] = sc_albums
+        context['has_sc_data'] = len(followups) > 0
         context['sclist_creation-date'] = playlist.sclist_creation_date
         context['listening_logs'] = playlist.listening_log.all()
         return context
